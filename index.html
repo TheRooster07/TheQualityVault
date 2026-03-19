@@ -1,1 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TheQualityVault — QA & Testing Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg:       #080b10;
+      --bg2:      #0d1117;
+      --bg3:      #111620;
+      --surface:  #141922;
+      --border:   rgba(255,255,255,0.07);
+      --border2:  rgba(99,210,140,0.2);
+      --green:    #63d28c;
+      --green2:   #4abe78;
+      --green-dim: rgba(99,210,140,0.12);
+      --cyan:     #3ecfcf;
+      --amber:    #f0b429;
+      --red:      #f05252;
+      --text:     #e8edf5;
+      --text2:    #7a8899;
+      --text3:    #4a5568;
+      --nav-h:    68px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(8,11,16,0.85);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 64px);
+      z-index: 1000;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    nav.scrolled { background: rgba(8,11,16,0.97); border-color: rgba(99,210,140,0.1); }
+
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 34px; height: 34px; border-radius: 7px;
+      background: linear-gradient(135deg, #1a2a1e 0%, #0d1f14 100%);
+      border: 1px solid rgba(99,210,140,0.35);
+      display: grid; place-items: center;
+      position: relative; overflow: hidden;
+    }
+    .logo-icon::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(99,210,140,0.25), transparent 60%);
+    }
+    .logo-wordmark {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+      color: var(--text); letter-spacing: -0.01em;
+    }
+    .logo-wordmark span { color: var(--green); }
+    .logo-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.58rem;
+      color: var(--green); background: var(--green-dim);
+      border: 1px solid rgba(99,210,140,0.2);
+      padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em;
+      margin-left: 2px;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.06em; color: var(--text2);
+      text-decoration: none; padding: 7px 14px; border-radius: 5px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-cta a {
+      color: var(--bg) !important;
+      background: var(--green) !important;
+      font-weight: 500;
+    }
+    .nav-cta a:hover { background: var(--green2) !important; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text2); transition: all 0.3s; }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      padding: 20px clamp(20px, 4vw, 64px) 28px;
+      z-index: 999; flex-direction: column; gap: 2px;
+      transform: translateY(-8px); opacity: 0;
+      transition: transform 0.25s, opacity 0.25s;
+      pointer-events: none;
+    }
+    .mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+      color: var(--text2); text-decoration: none;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+      letter-spacing: 0.06em; transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border: none; color: var(--green); margin-top: 8px; }
+    .mobile-menu a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      padding-top: var(--nav-h);
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding-left: clamp(20px, 6vw, 96px);
+      padding-right: clamp(20px, 6vw, 96px);
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(99,210,140,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,210,140,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 75%);
+    }
+    .hero-glow {
+      position: absolute; top: -20%; left: -10%;
+      width: 70%; height: 80%;
+      background: radial-gradient(ellipse, rgba(99,210,140,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute; bottom: 0; right: 0;
+      width: 50%; height: 60%;
+      background: radial-gradient(ellipse at 80% 80%, rgba(62,207,207,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Terminal */
+    .terminal {
+      position: absolute; right: clamp(20px, 5vw, 80px); top: 50%;
+      transform: translateY(-50%);
+      width: min(420px, 38vw);
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,210,140,0.05);
+      opacity: 0; animation: slideLeft 0.9s 0.8s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .terminal-bar {
+      background: #0d1117; padding: 12px 16px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.r { background: #f05252; } .t-dot.y { background: #f0b429; } .t-dot.g { background: #63d28c; }
+    .t-title { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text3); margin-left: 8px; letter-spacing: 0.05em; }
+    .terminal-body { padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.75; }
+    .t-line { display: flex; gap: 8px; }
+    .t-prompt { color: var(--green); user-select: none; }
+    .t-cmd { color: var(--text); }
+    .t-out { color: var(--text2); padding-left: 16px; }
+    .t-pass { color: var(--green); }
+    .t-fail { color: var(--red); }
+    .t-warn { color: var(--amber); }
+    .t-info { color: var(--cyan); }
+    .t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); vertical-align: text-bottom; animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .status-bar {
+      background: #0a0f16; padding: 10px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 16px; align-items: center;
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .status-txt { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text3); }
+    .status-txt strong { color: var(--green); }
+
+    .hero-content { position: relative; z-index: 2; max-width: 560px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--green-dim); border: 1px solid rgba(99,210,140,0.25);
+      border-radius: 20px; padding: 6px 14px 6px 10px;
+      margin-bottom: 32px;
+      opacity: 0; animation: fadeUp 0.7s 0.1s forwards;
+    }
+    .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+    .hero-badge span { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--green); letter-spacing: 0.08em; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+    h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      line-height: 1.0; letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.8s 0.25s forwards;
+    }
+    h1 .hl { color: var(--green); position: relative; }
+    h1 .hl::after { content: ''; position: absolute; left: 0; bottom: -3px; width: 100%; height: 2px; background: linear-gradient(90deg, var(--green), transparent); }
+    h1 .dim { color: var(--text2); font-weight: 400; }
+
+    .hero-sub {
+      font-size: 1.05rem; line-height: 1.75; color: var(--text2); font-weight: 300;
+      max-width: 480px; margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-btns {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.8s 0.55s forwards;
+    }
+    .btn-green {
+      background: var(--green); color: var(--bg);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.05em;
+      text-decoration: none; padding: 13px 28px; border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(99,210,140,0.25);
+    }
+    .btn-green:hover { background: var(--green2); transform: translateY(-1px); box-shadow: 0 6px 28px rgba(99,210,140,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--text2);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05em;
+      text-decoration: none; padding: 13px 24px; border-radius: 6px;
+      border: 1px solid var(--border);
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    .hero-metrics {
+      display: flex; gap: 36px; margin-top: 56px; padding-top: 36px;
+      border-top: 1px solid var(--border);
+      opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+    }
+    .metric-val { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--text); line-height: 1; }
+    .metric-val span { color: var(--green); }
+    .metric-lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text3); letter-spacing: 0.1em; margin-top: 4px; }
+
+    /* ── LOGOS ── */
+    .logos-strip {
+      background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 24px clamp(20px, 5vw, 80px);
+      display: flex; align-items: center; gap: clamp(24px, 4vw, 56px); flex-wrap: wrap;
+    }
+    .logos-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); letter-spacing: 0.12em; white-space: nowrap; }
+    .logo-items { display: flex; align-items: center; gap: clamp(28px, 4vw, 56px); flex-wrap: wrap; }
+    .logo-item { font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text3); letter-spacing: -0.01em; white-space: nowrap; }
+
+    /* ── SHARED ── */
+    section { padding: clamp(72px, 9vw, 120px) clamp(20px, 5vw, 80px); }
+    .sec-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.18em; color: var(--green);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+    }
+    .sec-tag::before { content: '//'; color: var(--text3); }
+    h2 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: clamp(1.9rem, 3.5vw, 3rem);
+      line-height: 1.15; letter-spacing: -0.025em; color: var(--text);
+    }
+    h2 em { font-style: normal; color: var(--green); }
+
+    /* ── ABOUT ── */
+    .about { background: var(--bg2); border-top: 1px solid var(--border); }
+    .about-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 5fr 4fr; gap: 80px; align-items: start;
+    }
+    .about-body { font-size: 1rem; color: var(--text2); line-height: 1.8; font-weight: 300; margin-top: 20px; }
+    .about-body p+p { margin-top: 18px; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .pill { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; background: var(--surface); border: 1px solid var(--border); color: var(--text2); padding: 5px 12px; border-radius: 4px; letter-spacing: 0.05em; }
+    .about-cards { display: flex; flex-direction: column; gap: 2px; }
+    .about-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 24px 22px;
+      display: flex; gap: 16px; align-items: flex-start;
+      transition: border-color 0.25s;
+    }
+    .about-card:hover { border-color: rgba(99,210,140,0.3); }
+    .about-card-icon {
+      width: 36px; height: 36px; border-radius: 7px;
+      background: var(--green-dim); border: 1px solid rgba(99,210,140,0.2);
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .about-card h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .about-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.55; }
+
+    /* ── SERVICES ── */
+    .services { background: var(--bg); }
+    .services-inner { max-width: 1180px; margin: 0 auto; }
+    .services-top { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 52px; align-items: end; }
+    .services-desc { font-size: 0.95rem; color: var(--text2); line-height: 1.75; font-weight: 300; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .svc {
+      background: var(--bg2); padding: 36px 28px;
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 14px;
+      transition: background 0.25s, border-color 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .svc::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--green), transparent); opacity: 0; transition: opacity 0.3s; }
+    .svc:hover { background: var(--surface); border-color: rgba(99,210,140,0.2); }
+    .svc:hover::before { opacity: 1; }
+    .svc-num { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--green); letter-spacing: 0.15em; }
+    .svc h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); }
+    .svc p { font-size: 0.88rem; color: var(--text2); line-height: 1.65; flex: 1; }
+    .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .svc-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; background: var(--bg3); border: 1px solid var(--border); color: var(--text3); padding: 3px 8px; border-radius: 3px; }
+    .svc-link { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--green); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .svc-link:hover { color: var(--green2); }
+
+    /* ── PORTFOLIO ── */
+    .portfolio { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .portfolio-inner { max-width: 1180px; margin: 0 auto; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 48px; }
+    .port-card { background: var(--surface); padding: 36px 32px; border: 1px solid var(--border); transition: border-color 0.25s; }
+    .port-card:hover { border-color: rgba(99,210,140,0.25); }
+    .port-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .port-card h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); }
+    .port-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; padding: 3px 9px; border-radius: 3px; letter-spacing: 0.08em; }
+    .port-badge.pass { background: rgba(99,210,140,0.1); border: 1px solid rgba(99,210,140,0.25); color: var(--green); }
+    .port-badge.live { background: rgba(62,207,207,0.1); border: 1px solid rgba(62,207,207,0.25); color: var(--cyan); }
+    .port-card p { font-size: 0.88rem; color: var(--text2); line-height: 1.65; margin-bottom: 20px; }
+    .port-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .port-meta span { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); background: var(--bg3); padding: 3px 10px; border-radius: 3px; border: 1px solid var(--border); }
+    .port-result { margin-top: 20px; padding: 14px 16px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text2); display: flex; align-items: center; gap: 10px; }
+    .port-result .pass-txt { color: var(--green); }
+
+    /* ── BLOG ── */
+    .blog { background: var(--bg); }
+    .blog-inner { max-width: 1180px; margin: 0 auto; }
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; }
+    .blog-card { background: var(--bg2); border: 1px solid var(--border); padding: 32px 28px; display: flex; flex-direction: column; gap: 14px; transition: border-color 0.25s; }
+    .blog-card:hover { border-color: rgba(99,210,140,0.2); }
+    .blog-cat { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; padding: 3px 10px; border-radius: 3px; display: inline-block; align-self: flex-start; }
+    .blog-cat.cat-qa { background: rgba(99,210,140,0.1); color: var(--green); border: 1px solid rgba(99,210,140,0.2); }
+    .blog-cat.cat-dev { background: rgba(62,207,207,0.1); color: var(--cyan); border: 1px solid rgba(62,207,207,0.2); }
+    .blog-cat.cat-ci { background: rgba(240,180,41,0.1); color: var(--amber); border: 1px solid rgba(240,180,41,0.2); }
+    .blog-card h3 { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.3; flex: 1; }
+    .blog-card p { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+    .blog-foot { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--border); }
+    .blog-date { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); }
+    .blog-link { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--green); text-decoration: none; }
+    .blog-link:hover { color: var(--green2); }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--bg2); border-top: 1px solid var(--border); }
+    .pricing-inner { max-width: 1180px; margin: 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; }
+    .plan { background: var(--surface); border: 1px solid var(--border); padding: 36px 28px; position: relative; transition: border-color 0.25s; }
+    .plan:hover { border-color: rgba(99,210,140,0.25); }
+    .plan.featured { border-color: rgba(99,210,140,0.4); background: linear-gradient(160deg, rgba(99,210,140,0.06) 0%, var(--surface) 60%); }
+    .plan-label { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text3); margin-bottom: 14px; }
+    .plan.featured .plan-label { color: var(--green); }
+    .plan-badge { position: absolute; top: -1px; right: 24px; background: var(--green); color: var(--bg); font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; padding: 4px 12px; font-weight: 500; letter-spacing: 0.05em; border-radius: 0 0 5px 5px; }
+    .plan h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .plan-price { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--text); line-height: 1; margin: 16px 0 4px; }
+    .plan-price sup { font-size: 1rem; vertical-align: top; margin-top: 8px; }
+    .plan-price sub { font-size: 0.85rem; font-weight: 400; color: var(--text3); }
+    .plan-desc { font-size: 0.85rem; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
+    .plan-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 24px; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .plan-features li { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text2); display: flex; align-items: center; gap: 10px; }
+    .plan-features li::before { content: '✓'; color: var(--green); font-size: 0.8rem; flex-shrink: 0; }
+    .plan-features li.muted { color: var(--text3); }
+    .plan-features li.muted::before { content: '—'; color: var(--text3); }
+    .btn-plan { display: block; width: 100%; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; padding: 13px; border-radius: 6px; text-decoration: none; border: 1px solid var(--border); color: var(--text2); transition: all 0.2s; }
+    .btn-plan:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+    .btn-plan.featured { background: var(--green); color: var(--bg); border-color: var(--green); font-weight: 500; }
+    .btn-plan.featured:hover { background: var(--green2); border-color: var(--green2); }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--bg); }
+    .contact-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .contact-info { padding-top: 4px; }
+    .contact-info h2 { margin-bottom: 20px; }
+    .contact-info p { font-size: 0.95rem; color: var(--text2); line-height: 1.75; font-weight: 300; margin-bottom: 36px; }
+    .contact-details { display: flex; flex-direction: column; gap: 16px; }
+    .contact-detail { display: flex; gap: 14px; align-items: flex-start; }
+    .contact-detail-icon { width: 36px; height: 36px; border-radius: 7px; background: var(--green-dim); border: 1px solid rgba(99,210,140,0.2); display: grid; place-items: center; flex-shrink: 0; }
+    .contact-detail-text { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text2); line-height: 1.5; }
+    .contact-detail-text strong { display: block; color: var(--text); margin-bottom: 2px; font-size: 0.68rem; letter-spacing: 0.08em; }
+    .contact-form { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 36px 32px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .form-group label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text3); letter-spacing: 0.1em; }
+    .form-group input, .form-group select, .form-group textarea { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 11px 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text3); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(99,210,140,0.4); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select option { background: var(--surface); }
+    .btn-submit { width: 100%; background: var(--green); color: var(--bg); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; border: none; padding: 14px; border-radius: 6px; cursor: pointer; margin-top: 4px; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--green2); }
+
+    /* ── FOOTER ── */
+    footer { background: #05080c; border-top: 1px solid var(--border); padding: 56px clamp(20px, 5vw, 80px) 28px; }
+    .footer-top { display: grid; grid-template-columns: 1.8fr repeat(4, 1fr); gap: 48px; padding-bottom: 44px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+    .footer-brand p { font-size: 0.85rem; color: var(--text3); line-height: 1.65; margin-top: 14px; max-width: 260px; }
+    .footer-col h5 { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text3); margin-bottom: 16px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-col ul a { font-size: 0.85rem; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--text2); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); letter-spacing: 0.06em; }
+    .footer-legal { display: flex; gap: 20px; }
+    .footer-legal a { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); text-decoration: none; }
+    .footer-legal a:hover { color: var(--text2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes slideLeft { from { opacity:0; transform:translateY(-50%) translateX(30px); } to { opacity:1; transform:translateY(-50%) translateX(0); } }
+
+    .reveal { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){
+      .terminal { display:none; }
+      h1 { font-size:clamp(2.6rem,6vw,4.2rem); }
+      .services-grid,.portfolio-grid,.blog-grid,.pricing-grid { grid-template-columns:repeat(2,1fr); }
+      .footer-top { grid-template-columns:1fr 1fr; gap:32px; }
+    }
+    @media(max-width:768px){
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .mobile-menu { display:flex; }
+      .about-inner,.services-top,.contact-inner { grid-template-columns:1fr; gap:40px; }
+      .form-row { grid-template-columns:1fr; }
+      .hero-metrics { gap:24px; }
+      .services-grid,.blog-grid,.pricing-grid { grid-template-columns:1fr; }
+      .portfolio-grid { grid-template-columns:1fr; }
+      .footer-top { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:480px){
+      .footer-top { grid-template-columns:1fr; }
+      .pricing-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="#63d28c" stroke-width="1.2"/>
+        <path d="M4 8l2.5 2.5L12 5" stroke="#63d28c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="logo-wordmark">The<span>Quality</span>Vault</div>
+    <div class="logo-tag">v2.4</div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li class="nav-cta"><a href="#contact">Contact</a></li>
+  </ul>
+
+  <button class="hamburger" id="menuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#portfolio">Portfolio</a>
+  <a href="#blog">Blog</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#contact">Contact →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
+      <span class="t-title">vault-runner · main branch</span>
+    </div>
+    <div class="terminal-body">
+      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">&nbsp;npm run vault:test --suite=full</span></div>
+      <div class="t-line"><span class="t-out t-info">▶ Loading test suites...</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;</span></div>
+      <div class="t-line"><span class="t-out t-pass">✓ auth.spec.ts &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(12ms)</span></div>
+      <div class="t-line"><span class="t-out t-pass">✓ api.spec.ts &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(34ms)</span></div>
+      <div class="t-line"><span class="t-out t-pass">✓ ui.regression.ts &nbsp;(88ms)</span></div>
+      <div class="t-line"><span class="t-out t-pass">✓ load.perf.ts &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(210ms)</span></div>
+      <div class="t-line"><span class="t-out t-warn">⚠ legacy.compat.ts &nbsp;(skipped)</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;</span></div>
+      <div class="t-line"><span class="t-out t-pass">✔ 247 passing &nbsp;(344ms)</span></div>
+      <div class="t-line"><span class="t-out t-warn">⚠ 1 pending</span></div>
+      <div class="t-line"><span class="t-out">&nbsp;</span></div>
+      <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd">&nbsp;</span><span class="t-cursor"></span></div>
+    </div>
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span class="status-txt">Suite complete — <strong>247/248 passed</strong> · coverage 98.7%</span>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span>QA &amp; Testing Platform · Now v2.4</span>
+    </div>
+    <h1>Quality with<br><span class="hl">Confidence.</span><br><span class="dim">Test everything.</span></h1>
+    <p class="hero-sub">TheQualityVault gives your team a complete arsenal of Quality Improvement Methods, QA tools, testing frameworks, and automation workflows — so nothing slips through before production.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-green">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Explore Tools
+      </a>
+      <a href="#portfolio" class="btn-outline">View Case Studies</a>
+    </div>
+    <div class="hero-metrics">
+      <div><div class="metric-val">247<span>k</span></div><div class="metric-lbl">Tests Run/Day</div></div>
+      <div><div class="metric-val">99<span>.8%</span></div><div class="metric-lbl">Uptime SLA</div></div>
+      <div><div class="metric-val">14<span>ms</span></div><div class="metric-lbl">Avg. Latency</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos-strip">
+  <span class="logos-label">TRUSTED BY ENGINEERING TEAMS AT</span>
+  <div class="logo-items">
+    <span class="logo-item">Nexus Corp</span>
+    <span class="logo-item">Aether Labs</span>
+    <span class="logo-item">Meridian Cloud</span>
+    <span class="logo-item">Stackline</span>
+    <span class="logo-item">Orion Systems</span>
+    <span class="logo-item">Velotech</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div>
+      <div class="sec-tag">About</div>
+      <h2>QA infrastructure for<br><em>modern teams</em></h2>
+      <div class="about-body">
+        <p>TheQualityVault was built by engineers who were tired of stitching together fragmented tools just to run a solid test suite. We consolidated everything into one vault — version-controlled, CI/CD-ready, and built for scale.</p>
+        <p>Whether you're running unit tests on a solo project or orchestrating thousands of parallel end-to-end tests across a microservices architecture, the vault handles it without drama.</p>
+      </div>
+      <div class="about-pills">
+        <span class="pill">Selenium</span><span class="pill">Cypress</span><span class="pill">Playwright</span>
+        <span class="pill">Jest</span><span class="pill">Pytest</span><span class="pill">k6</span>
+        <span class="pill">Postman</span><span class="pill">GitHub Actions</span>
+      </div>
+    </div>
+    <div class="about-cards">
+      <div class="about-card reveal">
+        <div class="about-card-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="#63d28c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div><h4>Zero-config setup</h4><p>Connect your repo and run your first test suite in under 5 minutes. No YAML archaeology required.</p></div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#63d28c" stroke-width="1.4"/><path d="M8 5v3l2 2" stroke="#63d28c" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div><h4>Real-time reporting</h4><p>Live dashboards, flake detection, and failure analysis — all streamed as tests run.</p></div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-card-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="1.5" stroke="#63d28c" stroke-width="1.4"/><path d="M5 5V3.5A3 3 0 0111 5" stroke="#63d28c" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <div><h4>Enterprise-grade security</h4><p>SOC 2 Type II certified. All test artifacts encrypted at rest and in transit.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-top">
+      <div>
+        <div class="sec-tag">Services</div>
+        <h2>Everything in<br><em>the toolkit</em></h2>
+      </div>
+      <p class="services-desc">From automated regression suites to performance benchmarking and API contract testing — every tool your QA pipeline needs lives in one place.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc reveal">
+        <div class="svc-num">// 01</div>
+        <h3>Test Automation</h3>
+        <p>Build and run browser, mobile, and API tests with our no-code recorder or full-code editor. Supports Playwright, Cypress, and Selenium.</p>
+        <div class="svc-tags"><span class="svc-tag">E2E</span><span class="svc-tag">Cross-browser</span><span class="svc-tag">Mobile</span></div>
+        <a href="#" class="svc-link">Explore →</a>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">// 02</div>
+        <h3>API Testing</h3>
+        <p>Write contract tests, schema validators, and fuzzing scenarios. Integrate with OpenAPI specs for automatic coverage mapping.</p>
+        <div class="svc-tags"><span class="svc-tag">REST</span><span class="svc-tag">GraphQL</span><span class="svc-tag">gRPC</span></div>
+        <a href="#" class="svc-link">Explore →</a>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">// 03</div>
+        <h3>Load &amp; Performance</h3>
+        <p>Simulate thousands of concurrent users, track p95/p99 latency, and set automated gates to block deploys that miss SLAs.</p>
+        <div class="svc-tags"><span class="svc-tag">k6</span><span class="svc-tag">Grafana</span><span class="svc-tag">Benchmarks</span></div>
+        <a href="#" class="svc-link">Explore →</a>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">// 04</div>
+        <h3>CI/CD Integration</h3>
+        <p>Plug into GitHub Actions, GitLab CI, CircleCI, or Jenkins in minutes. Status checks, PR comments, and rollback triggers built in.</p>
+        <div class="svc-tags"><span class="svc-tag">GitHub</span><span class="svc-tag">GitLab</span><span class="svc-tag">Jenkins</span></div>
+        <a href="#" class="svc-link">Explore →</a>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">// 05</div>
+        <h3>Visual Regression</h3>
+        <p>Pixel-perfect screenshot diffing with AI-powered noise reduction. Catch layout breaks before your users do.</p>
+        <div class="svc-tags"><span class="svc-tag">Snapshots</span><span class="svc-tag">Storybook</span><span class="svc-tag">AI Diff</span></div>
+        <a href="#" class="svc-link">Explore →</a>
+      </div>
+      <div class="svc reveal">
+        <div class="svc-num">// 06</div>
+        <h3>Analytics &amp; Reporting</h3>
+        <p>Flakiness scores, coverage trends, test health heatmaps, and executive-ready PDF reports — all automated.</p>
+        <div class="svc-tags"><span class="svc-tag">Dashboards</span><span class="svc-tag">Slack</span><span class="svc-tag">Exports</span></div>
+        <a href="#" class="svc-link">Explore →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="portfolio-inner">
+    <div class="sec-tag">Portfolio</div>
+    <h2>Case studies from<br><em>the field</em></h2>
+    <div class="portfolio-grid">
+      <div class="port-card reveal">
+        <div class="port-header">
+          <h3>Nexus Corp — Regression Overhaul</h3>
+          <span class="port-badge pass">COMPLETED</span>
+        </div>
+        <p>Migrated 1,400 manual test cases to fully automated Playwright suites. Reduced regression cycle from 4 days to 38 minutes.</p>
+        <div class="port-meta"><span>Playwright</span><span>GitHub Actions</span><span>3 months</span></div>
+        <div class="port-result">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="#63d28c" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Cycle time: <span class="pass-txt">4 days → 38 min</span> &nbsp;·&nbsp; Coverage: <span class="pass-txt">91%</span>
+        </div>
+      </div>
+      <div class="port-card reveal">
+        <div class="port-header">
+          <h3>Stackline — API Contract Testing</h3>
+          <span class="port-badge live">LIVE</span>
+        </div>
+        <p>Implemented OpenAPI-driven contract tests across 47 microservices. Production incidents from API drift dropped to zero.</p>
+        <div class="port-meta"><span>Pactflow</span><span>OpenAPI</span><span>Ongoing</span></div>
+        <div class="port-result">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="#63d28c" stroke-width="1.5" stroke-linecap="round"/></svg>
+          API incidents: <span class="pass-txt">12/qtr → 0</span> &nbsp;·&nbsp; 47 services covered
+        </div>
+      </div>
+      <div class="port-card reveal">
+        <div class="port-header">
+          <h3>Aether Labs — Load Testing at Scale</h3>
+          <span class="port-badge pass">COMPLETED</span>
+        </div>
+        <p>Designed and executed load tests simulating 50,000 concurrent users for a Series B SaaS platform pre-launch.</p>
+        <div class="port-meta"><span>k6</span><span>Grafana</span><span>AWS</span></div>
+        <div class="port-result">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="#63d28c" stroke-width="1.5" stroke-linecap="round"/></svg>
+          50k concurrent users &nbsp;·&nbsp; p99: <span class="pass-txt">180ms</span>
+        </div>
+      </div>
+      <div class="port-card reveal">
+        <div class="port-header">
+          <h3>Velotech — Visual QA Pipeline</h3>
+          <span class="port-badge live">LIVE</span>
+        </div>
+        <p>Built a full visual regression pipeline integrated into their design-to-dev workflow, catching layout regressions at the PR level.</p>
+        <div class="port-meta"><span>Storybook</span><span>Chromatic</span><span>CI/CD</span></div>
+        <div class="port-result">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3 3 7-7" stroke="#63d28c" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Visual bugs caught pre-merge: <span class="pass-txt">+340%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="blog" id="blog">
+  <div class="blog-inner">
+    <div class="sec-tag">Blog</div>
+    <h2>From the <em>engineers</em></h2>
+    <div class="blog-grid">
+      <div class="blog-card reveal">
+        <span class="blog-cat cat-qa">QA Strategy</span>
+        <h3>Why your flake rate is a product problem, not a test problem</h3>
+        <p>Flaky tests are symptomatic of deeper instability. Here's how to diagnose root causes and fix them permanently.</p>
+        <div class="blog-foot">
+          <span class="blog-date">Mar 14, 2026</span>
+          <a href="#" class="blog-link">Read →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal">
+        <span class="blog-cat cat-dev">DevEx</span>
+        <h3>Playwright vs Cypress in 2026 — an honest field comparison</h3>
+        <p>We ran both frameworks on the same 400-test suite. Here's what the data actually shows.</p>
+        <div class="blog-foot">
+          <span class="blog-date">Mar 7, 2026</span>
+          <a href="#" class="blog-link">Read →</a>
+        </div>
+      </div>
+      <div class="blog-card reveal">
+        <span class="blog-cat cat-ci">CI/CD</span>
+        <h3>Cutting test runtime by 60% with intelligent parallelization</h3>
+        <p>A deep dive into how we shard, balance, and distribute test suites to maximize throughput without adding cost.</p>
+        <div class="blog-foot">
+          <span class="blog-date">Feb 28, 2026</span>
+          <a href="#" class="blog-link">Read →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="sec-tag">Pricing</div>
+    <h2>Simple, transparent <em>plans</em></h2>
+    <div class="pricing-grid">
+      <div class="plan reveal">
+        <div class="plan-label">// STARTER</div>
+        <h3>Free</h3>
+        <div class="plan-price"><sup>$</sup>0<sub>/mo</sub></div>
+        <p class="plan-desc">For solo devs and small teams getting started with automated testing.</p>
+        <hr class="plan-divider"/>
+        <ul class="plan-features">
+          <li>Up to 5,000 test runs/mo</li>
+          <li>3 parallel runners</li>
+          <li>Playwright &amp; Cypress support</li>
+          <li>7-day report history</li>
+          <li class="muted">API testing module</li>
+          <li class="muted">Load &amp; performance</li>
+          <li class="muted">SSO &amp; team roles</li>
+        </ul>
+        <a href="#contact" class="btn-plan">Get started free</a>
+      </div>
+      <div class="plan featured reveal">
+        <div class="plan-badge">MOST POPULAR</div>
+        <div class="plan-label">// PRO</div>
+        <h3>Pro</h3>
+        <div class="plan-price"><sup>$</sup>79<sub>/mo</sub></div>
+        <p class="plan-desc">For growing teams shipping fast and needing full QA coverage.</p>
+        <hr class="plan-divider"/>
+        <ul class="plan-features">
+          <li>Unlimited test runs</li>
+          <li>20 parallel runners</li>
+          <li>All framework support</li>
+          <li>90-day report history</li>
+          <li>API testing module</li>
+          <li>Load &amp; performance tools</li>
+          <li class="muted">SSO &amp; custom roles</li>
+        </ul>
+        <a href="#contact" class="btn-plan featured">Start free trial</a>
+      </div>
+      <div class="plan reveal">
+        <div class="plan-label">// ENTERPRISE</div>
+        <h3>Enterprise</h3>
+        <div class="plan-price" style="font-size:1.8rem;padding-top:6px;">Custom</div>
+        <p class="plan-desc">For large orgs needing dedicated infrastructure, SLAs, and compliance.</p>
+        <hr class="plan-divider"/>
+        <ul class="plan-features">
+          <li>Unlimited everything</li>
+          <li>Dedicated runners</li>
+          <li>All frameworks + custom</li>
+          <li>Unlimited history</li>
+          <li>Full API &amp; load suite</li>
+          <li>SSO, RBAC &amp; audit logs</li>
+          <li>SOC 2 &amp; HIPAA ready</li>
+        </ul>
+        <a href="#contact" class="btn-plan">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div class="sec-tag">Contact</div>
+      <h2>Let's talk<br><em>quality</em></h2>
+      <p>Whether you're evaluating the platform, need a custom enterprise quote, or just want to geek out about test architecture — we're here for it.</p>
+      <div class="contact-details">
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="3" width="12" height="9" rx="1.5" stroke="#63d28c" stroke-width="1.3"/><path d="M1.5 5l6 4 6-4" stroke="#63d28c" stroke-width="1.3"/></svg>
+          </div>
+          <div class="contact-detail-text"><strong>EMAIL</strong>hello@thequalityvault.com</div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="#63d28c" stroke-width="1.3"/><path d="M7.5 4v3.5l2 2" stroke="#63d28c" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="contact-detail-text"><strong>RESPONSE TIME</strong>Within 1 business day</div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1.5C5.015 1.5 3 3.515 3 6c0 3.75 4.5 7.5 4.5 7.5S12 9.75 12 6c0-2.485-2.015-4.5-4.5-4.5z" stroke="#63d28c" stroke-width="1.3"/><circle cx="7.5" cy="6" r="1.5" stroke="#63d28c" stroke-width="1.2"/></svg>
+          </div>
+          <div class="contact-detail-text"><strong>HEADQUARTERS</strong>Miami, FL · Remote-first team</div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-row">
+        <div class="form-group"><label>FIRST NAME</label><input type="text" placeholder="Jane"/></div>
+        <div class="form-group"><label>LAST NAME</label><input type="text" placeholder="Smith"/></div>
+      </div>
+      <div class="form-group"><label>WORK EMAIL</label><input type="email" placeholder="jane@company.com"/></div>
+      <div class="form-group"><label>COMPANY</label><input type="text" placeholder="Acme Inc."/></div>
+      <div class="form-group">
+        <label>I'M INTERESTED IN</label>
+        <select>
+          <option value="">Select a topic...</option>
+          <option>Test Automation</option>
+          <option>API Testing</option>
+          <option>Load &amp; Performance</option>
+          <option>Enterprise Plan</option>
+          <option>General Inquiry</option>
+        </select>
+      </div>
+      <div class="form-group"><label>MESSAGE</label><textarea placeholder="Tell us about your stack and what you're trying to solve..."></textarea></div>
+      <button class="btn-submit" onclick="this.textContent='Sent ✓'; this.style.background='#4abe78';">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="#63d28c" stroke-width="1.2"/>
+            <path d="M4 8l2.5 2.5L12 5" stroke="#63d28c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="logo-wordmark">The<span>Quality</span>Vault</div>
+      </a>
+      <p>QA &amp; testing infrastructure for engineering teams who won't accept "good enough."</p>
+    </div>
+    <div class="footer-col">
+      <h5>PRODUCT</h5>
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Roadmap</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>COMPANY</h5>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>RESOURCES</h5>
+      <ul>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">API Reference</a></li>
+        <li><a href="#">Status Page</a></li>
+        <li><a href="#">Community</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>SUPPORT</h5>
+      <ul>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Trust Center</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 TheQualityVault.com — All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll nav
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30));
+
+  // Mobile menu
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('mobileMenu');
+  let open = false;
+  btn.addEventListener('click', () => {
+    open = !open;
+    menu.classList.toggle('open', open);
+    const sp = btn.querySelectorAll('span');
+    if (open) {
+      sp[0].style.cssText = 'transform:rotate(45deg) translate(4.5px,4.5px)';
+      sp[1].style.opacity = '0';
+      sp[2].style.cssText = 'transform:rotate(-45deg) translate(4.5px,-4.5px)';
+    } else {
+      sp.forEach(s => s.style.cssText = '');
+    }
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    open = false; menu.classList.remove('open');
+    btn.querySelectorAll('span').forEach(s => s.style.cssText = '');
+  }));
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
