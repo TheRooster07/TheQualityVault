@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taguchi Loss Function Calculator</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #171a24;
+    --surface2: #1e2130;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --accent: #4f8ef7;
+    --accent2: #38d9a9;
+    --warn: #ff7c5c;
+    --text: #e8eaf0;
+    --text2: #8b92a8;
+    --text3: #4a5068;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* — grid lines bg — */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  header { margin-bottom: 40px; }
+  .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .logo-mark {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--accent); display: grid; place-items: center;
+    font-family: var(--mono); font-weight: 500; font-size: 13px; color: #fff;
+  }
+  h1 { font-size: 22px; font-weight: 500; letter-spacing: -0.3px; }
+  .subtitle { color: var(--text2); font-size: 13px; }
+  .formula-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 10px;
+    background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 6px; padding: 6px 14px;
+    font-family: var(--mono); font-size: 13px; color: var(--accent2);
+  }
+
+  /* — layout — */
+  .main-grid { display: grid; grid-template-columns: 340px 1fr; gap: 20px; align-items: start; }
+  @media(max-width:820px) { .main-grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text3);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-body { padding: 18px; }
+
+  /* — inputs — */
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 12px; color: var(--text2);
+    margin-bottom: 5px; font-weight: 400;
+  }
+  .field-row { display: flex; gap: 8px; }
+  .field input, .field select {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 7px;
+    color: var(--text); font-family: var(--mono); font-size: 13px;
+    padding: 8px 12px; outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--accent); }
+  .field input::placeholder { color: var(--text3); }
+  .field .hint { font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .field-inline { display: flex; gap: 8px; }
+  .field-inline .field { flex: 1; margin-bottom: 0; }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* — mode toggle — */
+  .mode-toggle {
+    display: flex; gap: 4px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px; padding: 3px;
+    margin-bottom: 14px;
+  }
+  .mode-btn {
+    flex: 1; padding: 6px 10px; border-radius: 5px; border: none;
+    background: transparent; color: var(--text2);
+    font-family: var(--sans); font-size: 12px; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .mode-btn.active { background: var(--accent); color: #fff; }
+
+  /* — measurement rows — */
+  #measurements { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .mrow {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .mrow input {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 6px; color: var(--text); font-family: var(--mono);
+    font-size: 13px; padding: 7px 10px; outline: none; transition: border-color 0.15s;
+  }
+  .mrow input:focus { border-color: var(--accent); }
+  .mrow-label { font-size: 11px; color: var(--text3); font-family: var(--mono); min-width: 20px; }
+  .mrow-loss { font-size: 12px; color: var(--accent2); font-family: var(--mono); min-width: 64px; text-align: right; }
+  .del-btn {
+    width: 24px; height: 24px; border: none; background: transparent;
+    color: var(--text3); cursor: pointer; font-size: 16px; line-height: 1;
+    border-radius: 4px; display: grid; place-items: center;
+    transition: color 0.15s, background 0.15s;
+  }
+  .del-btn:hover { color: var(--warn); background: rgba(255,124,92,0.1); }
+  .add-btn {
+    width: 100%; padding: 7px; border: 1px dashed var(--border2);
+    background: transparent; color: var(--text2); border-radius: 7px;
+    font-family: var(--sans); font-size: 12px; cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* — stat cards — */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .stat-card {
+    background: var(--surface2); border-radius: 8px; padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+  .stat-label { font-size: 11px; color: var(--text3); margin-bottom: 3px; }
+  .stat-value { font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--text); }
+  .stat-value.good { color: var(--accent2); }
+  .stat-value.warn { color: var(--warn); }
+
+  /* — chart — */
+  .chart-wrap { position: relative; height: 260px; }
+
+  /* — table — */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th {
+    text-align: left; padding: 8px 12px;
+    border-bottom: 1px solid var(--border2);
+    font-size: 11px; color: var(--text3); font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 8px 12px; font-family: var(--mono); font-size: 12px; color: var(--text2); }
+  tbody td:first-child { color: var(--text3); }
+  tbody td.loss-val { color: var(--accent2); }
+  tbody td.loss-high { color: var(--warn); }
+  tbody tr:hover td { background: var(--surface2); }
+  .tag-inside { background: rgba(56,217,169,0.12); color: var(--accent2); padding: 2px 7px; border-radius: 4px; font-size: 10px; }
+  .tag-outside { background: rgba(255,124,92,0.12); color: var(--warn); padding: 2px 7px; border-radius: 4px; font-size: 10px; }
+
+  /* — action buttons — */
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 16px; border-radius: 8px; border: none;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+  .btn-green { background: rgba(56,217,169,0.15); color: var(--accent2); border: 1px solid rgba(56,217,169,0.3); }
+  .btn:hover { opacity: 0.85; }
+
+  /* — k-calc helper — */
+  .k-calc { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: -6px; margin-bottom: 14px; }
+  .k-calc-title { font-size: 11px; color: var(--text3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .k-result { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-top: 8px; }
+
+  /* — empty state — */
+  .empty { text-align: center; padding: 32px 0; color: var(--text3); font-size: 13px; }
+
+  /* — tab strip — */
+  .tab-strip { display: flex; gap: 2px; padding: 14px 18px 0; border-bottom: 1px solid var(--border); }
+  .tab {
+    padding: 7px 14px; border-radius: 6px 6px 0 0; font-size: 12px;
+    cursor: pointer; color: var(--text3); border: none; background: transparent;
+    font-family: var(--sans); transition: color 0.15s;
+  }
+  .tab.active { color: var(--text); background: var(--surface2); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .footer-note { margin-top: 32px; font-size: 12px; color: var(--text3); text-align: center; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="logo-row">
+      <div class="logo-mark">TLF</div>
+      <h1>Taguchi Loss Function Calculator</h1>
+    </div>
+    <div class="subtitle">Nominal-is-best quality loss analysis · L(x) = k(x − T)²</div>
+    <div class="formula-badge">L(x) = k · (x − T)² &nbsp;·&nbsp; k = Δ₀ / d²</div>
+  </header>
+
+  <div class="main-grid">
+
+    <!-- LEFT: INPUTS -->
+    <div>
+      <div class="panel">
+        <div class="panel-header">Parameters</div>
+        <div class="panel-body">
+
+          <div class="field">
+            <label>Target value (T)</label>
+            <input type="number" id="target" value="100" step="any" placeholder="e.g. 100">
+            <div class="hint">The ideal nominal value for this characteristic</div>
+          </div>
+
+          <div class="field-inline">
+            <div class="field">
+              <label>LSL (lower spec)</label>
+              <input type="number" id="lsl" value="94" step="any" placeholder="e.g. 94">
+            </div>
+            <div class="field">
+              <label>USL (upper spec)</label>
+              <input type="number" id="usl" value="106" step="any" placeholder="e.g. 106">
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="field">
+            <label>Loss coefficient (k)</label>
+            <div class="mode-toggle">
+              <button class="mode-btn active" onclick="setKMode('manual')">Enter k directly</button>
+              <button class="mode-btn" onclick="setKMode('calc')">Calculate from Δ₀</button>
+            </div>
+            <input type="number" id="k_manual" value="1" step="any" placeholder="e.g. 1.0" style="display:block">
+            <div id="k_calc_ui" style="display:none">
+              <div class="k-calc">
+                <div class="k-calc-title">Compute k from cost at spec limit</div>
+                <div class="field-inline" style="margin-bottom:8px">
+                  <div class="field">
+                    <label>Δ₀ — cost at spec limit ($)</label>
+                    <input type="number" id="delta0" value="500" step="any" placeholder="500">
+                  </div>
+                  <div class="field">
+                    <label>d — spec half-width</label>
+                    <input type="number" id="d_val" value="6" step="any" placeholder="6" readonly style="background:var(--surface);color:var(--text2)">
+                  </div>
+                </div>
+                <div class="k-result" id="k_computed">k = 500 / 6² = 13.89</div>
+              </div>
+            </div>
+            <div class="hint" id="k_hint">Higher k = steeper loss penalty per unit deviation</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">
+            Measurements
+            <span id="mcount" style="color:var(--text2);margin-left:6px;text-transform:none;letter-spacing:0"></span>
+          </div>
+
+          <div id="measurements"></div>
+          <button class="add-btn" onclick="addRow()">+ add measurement</button>
+
+          <div class="btn-row" style="margin-top:16px">
+            <button class="btn btn-secondary" onclick="loadDemo()">load demo data</button>
+            <button class="btn btn-secondary" onclick="clearAll()">clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+
+      <!-- Stats -->
+      <div class="panel">
+        <div class="panel-header">Summary statistics</div>
+        <div class="panel-body">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Average loss L̄</div>
+              <div class="stat-value" id="stat-avg-loss">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Max loss</div>
+              <div class="stat-value" id="stat-max-loss">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">% within spec</div>
+              <div class="stat-value" id="stat-pct">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Avg deviation |x−T|</div>
+              <div class="stat-value" id="stat-avg-dev">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart + Table panel -->
+      <div class="panel">
+        <div class="tab-strip">
+          <button class="tab active" onclick="switchTab('chart')">Chart</button>
+          <button class="tab" onclick="switchTab('table')">Results table</button>
+        </div>
+
+        <div id="tab-chart" class="tab-content active">
+          <div class="panel-body">
+            <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+          </div>
+        </div>
+
+        <div id="tab-table" class="tab-content">
+          <div class="panel-body" style="padding:0">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Label</th>
+                    <th>x (measured)</th>
+                    <th>x − T</th>
+                    <th>(x−T)²</th>
+                    <th>L(x) = k·(x−T)²</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="results-tbody">
+                  <tr><td colspan="7" class="empty">Add measurements to see results</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-body" style="padding-top:0;border-top:1px solid var(--border)">
+          <div class="btn-row">
+            <button class="btn btn-green" onclick="exportXLSX()">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1v9M4 6l4 4 4-4M2 12v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download Excel (.xlsx)
+            </button>
+            <button class="btn btn-secondary" onclick="exportCSV()">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 1v9M4 6l4 4 4-4M2 12v2a1 1 0 001 1h10a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download CSV
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Taguchi Loss Function — Nominal-is-Best &nbsp;·&nbsp; L(x) = k(x−T)² &nbsp;·&nbsp; All calculations performed client-side
+  </div>
+</div>
+
+<script>
+let chartInstance = null;
+let kMode = 'manual';
+let rowId = 0;
+const rows = [];
+
+function setKMode(mode) {
+  kMode = mode;
+  document.querySelectorAll('.mode-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&mode==='manual')||(i===1&&mode==='calc')));
+  document.getElementById('k_manual').style.display = mode === 'manual' ? 'block' : 'none';
+  document.getElementById('k_calc_ui').style.display = mode === 'calc' ? 'block' : 'none';
+  updateKCalc();
+  recalc();
+}
+
+function getK() {
+  if (kMode === 'manual') return parseFloat(document.getElementById('k_manual').value) || 1;
+  const d0 = parseFloat(document.getElementById('delta0').value) || 0;
+  const d = getSpecHalfWidth();
+  return d > 0 ? d0 / (d * d) : 1;
+}
+
+function getSpecHalfWidth() {
+  const T = parseFloat(document.getElementById('target').value) || 0;
+  const lsl = parseFloat(document.getElementById('lsl').value);
+  const usl = parseFloat(document.getElementById('usl').value);
+  if (!isNaN(lsl) && !isNaN(usl)) return (usl - lsl) / 2;
+  if (!isNaN(usl)) return Math.abs(usl - T);
+  if (!isNaN(lsl)) return Math.abs(T - lsl);
+  return 6;
+}
+
+function updateKCalc() {
+  if (kMode !== 'calc') return;
+  const d0 = parseFloat(document.getElementById('delta0').value) || 0;
+  const d = getSpecHalfWidth();
+  document.getElementById('d_val').value = d.toFixed(3);
+  const k = d > 0 ? d0 / (d * d) : 0;
+  document.getElementById('k_computed').textContent = `k = ${d0} / ${d.toFixed(2)}² = ${k.toFixed(4)}`;
+}
+
+function addRow(val='', label='') {
+  const id = rowId++;
+  rows.push({ id, val, label });
+  renderRows();
+  recalc();
+}
+
+function delRow(id) {
+  const i = rows.findIndex(r => r.id === id);
+  if (i >= 0) rows.splice(i, 1);
+  renderRows();
+  recalc();
+}
+
+function renderRows() {
+  const container = document.getElementById('measurements');
+  container.innerHTML = '';
+  rows.forEach((r, idx) => {
+    const T = parseFloat(document.getElementById('target').value) || 0;
+    const k = getK();
+    const x = parseFloat(r.val);
+    const loss = isNaN(x) ? '' : (k * (x - T) ** 2).toFixed(3);
+    const div = document.createElement('div');
+    div.className = 'mrow';
+    div.innerHTML = `
+      <span class="mrow-label">${idx + 1}</span>
+      <input type="text" placeholder="label" value="${r.label}" oninput="rows[${idx}].label=this.value;recalc()" style="max-width:80px">
+      <input type="number" placeholder="value" value="${r.val}" step="any" oninput="rows[${idx}].val=this.value;recalc();updateRowLoss(${idx})">
+      <span class="mrow-loss" id="rl-${r.id}">${loss ? loss : '—'}</span>
+      <button class="del-btn" onclick="delRow(${r.id})">×</button>`;
+    container.appendChild(div);
+  });
+  document.getElementById('mcount').textContent = rows.length ? `(${rows.length})` : '';
+}
+
+function updateRowLoss(idx) {
+  if (idx >= rows.length) return;
+  const T = parseFloat(document.getElementById('target').value) || 0;
+  const k = getK();
+  const x = parseFloat(rows[idx].val);
+  const el = document.getElementById('rl-' + rows[idx].id);
+  if (el) el.textContent = isNaN(x) ? '—' : (k * (x - T) ** 2).toFixed(3);
+}
+
+function recalc() {
+  const T = parseFloat(document.getElementById('target').value) || 0;
+  const lsl = parseFloat(document.getElementById('lsl').value);
+  const usl = parseFloat(document.getElementById('usl').value);
+  const k = getK();
+
+  updateKCalc();
+
+  const validRows = rows.filter(r => !isNaN(parseFloat(r.val))).map((r, i) => {
+    const x = parseFloat(r.val);
+    const dev = x - T;
+    const devSq = dev * dev;
+    const loss = k * devSq;
+    const inside = (isNaN(lsl) || x >= lsl) && (isNaN(usl) || x <= usl);
+    return { ...r, x, dev, devSq, loss, inside, displayLabel: r.label || `M${i+1}` };
+  });
+
+  // Update row loss displays
+  rows.forEach((_, i) => updateRowLoss(i));
+
+  // Stats
+  if (validRows.length > 0) {
+    const avgLoss = validRows.reduce((s, r) => s + r.loss, 0) / validRows.length;
+    const maxLoss = Math.max(...validRows.map(r => r.loss));
+    const pct = (validRows.filter(r => r.inside).length / validRows.length * 100);
+    const avgDev = validRows.reduce((s, r) => s + Math.abs(r.dev), 0) / validRows.length;
+
+    document.getElementById('stat-avg-loss').textContent = avgLoss.toFixed(3);
+    document.getElementById('stat-avg-loss').className = 'stat-value' + (avgLoss > k * getSpecHalfWidth() ** 2 * 0.5 ? ' warn' : ' good');
+    document.getElementById('stat-max-loss').textContent = maxLoss.toFixed(3);
+    document.getElementById('stat-max-loss').className = 'stat-value' + (maxLoss > k * getSpecHalfWidth() ** 2 ? ' warn' : '');
+    document.getElementById('stat-pct').textContent = pct.toFixed(1) + '%';
+    document.getElementById('stat-pct').className = 'stat-value' + (pct >= 100 ? ' good' : pct < 90 ? ' warn' : '');
+    document.getElementById('stat-avg-dev').textContent = avgDev.toFixed(4);
+    document.getElementById('stat-avg-dev').className = 'stat-value';
+  } else {
+    ['stat-avg-loss','stat-max-loss','stat-pct','stat-avg-dev'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+      document.getElementById(id).className = 'stat-value';
+    });
+  }
+
+  // Table
+  const tbody = document.getElementById('results-tbody');
+  if (validRows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Add measurements to see results</td></tr>';
+  } else {
+    tbody.innerHTML = validRows.map((r, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${r.displayLabel}</td>
+        <td>${r.x.toFixed(4)}</td>
+        <td>${r.dev >= 0 ? '+' : ''}${r.dev.toFixed(4)}</td>
+        <td>${r.devSq.toFixed(4)}</td>
+        <td class="${r.inside ? 'loss-val' : 'loss-high'}">${r.loss.toFixed(4)}</td>
+        <td><span class="${r.inside ? 'tag-inside' : 'tag-outside'}">${r.inside ? 'within spec' : 'out of spec'}</span></td>
+      </tr>`).join('');
+  }
+
+  drawChart(T, lsl, usl, k, validRows);
+}
+
+function drawChart(T, lsl, usl, k, validRows) {
+  const xMin = isNaN(lsl) ? T - 8 : Math.min(lsl - 2, Math.min(...validRows.map(r=>r.x), T - 4));
+  const xMax = isNaN(usl) ? T + 8 : Math.max(usl + 2, Math.max(...validRows.map(r=>r.x), T + 4));
+  const steps = 200;
+  const curveX = [], curveY = [];
+  for (let i = 0; i <= steps; i++) {
+    const x = xMin + (xMax - xMin) * i / steps;
+    curveX.push(x); curveY.push(k * (x - T) ** 2);
+  }
+
+  const annotations = {};
+  annotations['target'] = { type: 'line', xMin: T, xMax: T, borderColor: '#38d9a9', borderWidth: 1.5, borderDash: [5,4], label: { content: 'T', display: true, position: 'start', color: '#38d9a9', font: { size: 10 } } };
+  if (!isNaN(lsl)) annotations['lsl'] = { type: 'line', xMin: lsl, xMax: lsl, borderColor: '#ff7c5c', borderWidth: 1, borderDash: [4,4], label: { content: 'LSL', display: true, position: 'start', color: '#ff7c5c', font: { size: 10 } } };
+  if (!isNaN(usl)) annotations['usl'] = { type: 'line', xMin: usl, xMax: usl, borderColor: '#ff7c5c', borderWidth: 1, borderDash: [4,4], label: { content: 'USL', display: true, position: 'start', color: '#ff7c5c', font: { size: 10 } } };
+
+  const scatterData = validRows.map(r => ({ x: r.x, y: r.loss, inside: r.inside, label: r.displayLabel }));
+
+  if (chartInstance) chartInstance.destroy();
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  chartInstance = new Chart(ctx, {
+    data: {
+      datasets: [
+        {
+          type: 'line', label: 'L(x) = k(x−T)²',
+          data: curveX.map((x, i) => ({ x, y: curveY[i] })),
+          borderColor: '#4f8ef7', borderWidth: 2,
+          pointRadius: 0, fill: { target: 'origin', above: 'rgba(79,142,247,0.06)' },
+          tension: 0.4, order: 2
+        },
+        {
+          type: 'scatter', label: 'Measurements',
+          data: scatterData,
+          backgroundColor: scatterData.map(d => d.inside ? '#38d9a9' : '#ff7c5c'),
+          pointRadius: 6, pointHoverRadius: 8, order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 250 },
+      plugins: {
+        legend: { labels: { color: '#8b92a8', font: { size: 11 }, boxWidth: 14 } },
+        tooltip: {
+          backgroundColor: '#1e2130', borderColor: '#2d3148', borderWidth: 1,
+          titleColor: '#e8eaf0', bodyColor: '#8b92a8',
+          callbacks: {
+            title: (items) => {
+              const d = items[0].raw;
+              return d.label !== undefined ? d.label : 'Curve';
+            },
+            label: (item) => {
+              const d = item.raw;
+              if (d.inside !== undefined) return [`x = ${d.x.toFixed(4)}`, `L(x) = ${d.y.toFixed(4)}`, d.inside ? 'within spec' : 'OUT OF SPEC'];
+              return `L(${d.x.toFixed(3)}) = ${d.y.toFixed(3)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { type: 'linear', title: { display: true, text: 'x (measured value)', color: '#4a5068', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4a5068', font: { size: 10 } } },
+        y: { title: { display: true, text: 'L(x) — loss', color: '#4a5068', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#4a5068', font: { size: 10 } }, min: 0 }
+      }
+    }
+  });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='chart')||(i===1&&tab==='table')));
+  document.getElementById('tab-chart').classList.toggle('active', tab==='chart');
+  document.getElementById('tab-table').classList.toggle('active', tab==='table');
+  if (tab === 'chart' && chartInstance) chartInstance.resize();
+}
+
+function getExportData() {
+  const T = parseFloat(document.getElementById('target').value) || 0;
+  const lsl = parseFloat(document.getElementById('lsl').value);
+  const usl = parseFloat(document.getElementById('usl').value);
+  const k = getK();
+  return rows.filter(r => !isNaN(parseFloat(r.val))).map((r, i) => {
+    const x = parseFloat(r.val);
+    const dev = x - T;
+    const devSq = dev * dev;
+    const loss = k * devSq;
+    const inside = (isNaN(lsl) || x >= lsl) && (isNaN(usl) || x <= usl);
+    return { '#': i+1, 'Label': r.label || `M${i+1}`, 'Target (T)': T, 'k': +k.toFixed(6), 'LSL': isNaN(lsl)?'':lsl, 'USL': isNaN(usl)?'':usl, 'x (measured)': x, 'x − T': +dev.toFixed(6), '(x−T)²': +devSq.toFixed(6), 'L(x) = k·(x−T)²': +loss.toFixed(6), 'Within spec': inside ? 'Yes' : 'No' };
+  });
+}
+
+function exportCSV() {
+  const data = getExportData();
+  if (!data.length) { alert('No measurements to export.'); return; }
+  const headers = Object.keys(data[0]);
+  const rows2 = [headers, ...data.map(r => headers.map(h => r[h]))];
+  const csv = rows2.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'taguchi_loss_function.csv'; a.click();
+}
+
+function exportXLSX() {
+  const data = getExportData();
+  if (!data.length) { alert('No measurements to export.'); return; }
+  const T = parseFloat(document.getElementById('target').value) || 0;
+  const lsl = parseFloat(document.getElementById('lsl').value);
+  const usl = parseFloat(document.getElementById('usl').value);
+  const k = getK();
+
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: Results
+  const ws = XLSX.utils.json_to_sheet(data);
+  const colWidths = [4, 12, 10, 8, 8, 8, 12, 10, 10, 18, 12];
+  ws['!cols'] = colWidths.map(w => ({ wch: w }));
+  XLSX.utils.book_append_sheet(wb, ws, 'Loss Results');
+
+  // Sheet 2: Parameters + Summary
+  const validLosses = data.map(r => r['L(x) = k·(x−T)²']);
+  const avgLoss = validLosses.length ? validLosses.reduce((a,b)=>a+b,0)/validLosses.length : 0;
+  const maxLoss = validLosses.length ? Math.max(...validLosses) : 0;
+  const pct = validLosses.length ? (data.filter(r=>r['Within spec']==='Yes').length/data.length*100) : 0;
+  const paramRows = [
+    ['TAGUCHI LOSS FUNCTION — PARAMETERS', ''],
+    ['', ''],
+    ['Target (T)', T],
+    ['Loss coefficient (k)', +k.toFixed(6)],
+    ['Lower spec limit (LSL)', isNaN(lsl)?'Not set':lsl],
+    ['Upper spec limit (USL)', isNaN(usl)?'Not set':usl],
+    ['Spec half-width (d)', +getSpecHalfWidth().toFixed(4)],
+    ['', ''],
+    ['SUMMARY STATISTICS', ''],
+    ['', ''],
+    ['Total measurements', data.length],
+    ['Average loss L̄', +avgLoss.toFixed(6)],
+    ['Maximum loss', +maxLoss.toFixed(6)],
+    ['% within spec', +(pct).toFixed(2)],
+    ['', ''],
+    ['Formula', 'L(x) = k · (x − T)²'],
+    ['k derivation', 'k = Δ₀ / d²  where Δ₀ = cost at spec limit'],
+    ['Generated', new Date().toLocaleString()],
+  ];
+  const ws2 = XLSX.utils.aoa_to_sheet(paramRows);
+  ws2['!cols'] = [{ wch: 30 }, { wch: 20 }];
+  XLSX.utils.book_append_sheet(wb, ws2, 'Parameters');
+
+  XLSX.writeFile(wb, 'taguchi_loss_function.xlsx');
+}
+
+function loadDemo() {
+  rows.length = 0; rowId = 0;
+  document.getElementById('target').value = 100;
+  document.getElementById('lsl').value = 94;
+  document.getElementById('usl').value = 106;
+  document.getElementById('k_manual').value = 2;
+  const demos = [
+    ['Part 1', 100.0], ['Part 2', 101.5], ['Part 3', 98.2], ['Part 4', 103.8],
+    ['Part 5', 99.1], ['Part 6', 105.5], ['Part 7', 96.0], ['Part 8', 107.2],
+    ['Part 9', 100.8], ['Part 10', 93.5]
+  ];
+  demos.forEach(([l, v]) => { rows.push({ id: rowId++, val: String(v), label: l }); });
+  renderRows(); recalc();
+}
+
+function clearAll() {
+  rows.length = 0; rowId = 0;
+  renderRows(); recalc();
+}
+
+// Wire up all param inputs to recalc
+['target','lsl','usl','k_manual','delta0'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => { recalc(); });
+});
+
+// Init
+loadDemo();
+</script>
+</body>
+</html>
