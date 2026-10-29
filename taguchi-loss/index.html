@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taguchi Loss Function — Quality Vault</title>
+<meta name="description" content="Free Taguchi Quality Loss Function calculator with downloadable Python and R code. Nominal-Is-Best, Larger-Is-Better and Smaller-Is-Better, single value or batch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0d12;--surface:#111620;--surface2:#1a2030;--border:#1e2a3a;--accent:#00c9a7;--accent2:#ff6b35;--accent3:#4a9eff;--text:#e8edf5;--muted:#6b7a92;--gold:#f0b429}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:64px;background:rgba(10,13,18,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:34px;height:34px;background:var(--accent);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:#0a0d12}
+.logo-text{font-family:"DM Serif Display",serif;font-size:1.2rem;color:var(--text)}
+.logo-text span{color:var(--accent)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500}
+.nav-links a:hover{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 3rem}
+.section-label{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+h1{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.1;margin-bottom:1.25rem}
+h1 em{color:var(--accent);font-style:italic}
+h2{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.2;margin-bottom:1rem}
+h3{font-size:1rem;font-weight:600;margin-bottom:.4rem}
+p.lead{color:var(--muted);font-size:1.05rem;max-width:640px}
+section{padding:4.5rem 0;border-bottom:1px solid var(--border)}
+.hero{padding:5rem 0 4rem}
+.crumb{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--muted);margin-bottom:1.5rem}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--accent)}
+.btn-row{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:4px;font-weight:600;font-size:.9rem;text-decoration:none;transition:.2s;border:1px solid var(--border);color:var(--text);background:none;cursor:pointer;font-family:inherit}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#0a0d12;border-color:var(--accent)}
+.btn.primary:hover{background:#00e6be;color:#0a0d12}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.6rem}
+.tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;margin-bottom:1rem}
+.t-nib{background:rgba(74,158,255,.1);color:var(--accent3);border:1px solid rgba(74,158,255,.25)}
+.t-lib{background:rgba(0,201,167,.1);color:var(--accent);border:1px solid rgba(0,201,167,.25)}
+.t-sib{background:rgba(255,107,53,.1);color:var(--accent2);border:1px solid rgba(255,107,53,.25)}
+.formula{font-family:"IBM Plex Mono",monospace;font-size:.95rem;color:var(--text);background:var(--surface2);border-radius:4px;padding:.6rem .8rem;margin:.75rem 0}
+.card p{color:var(--muted);font-size:.88rem}
+/* calculator */
+.calc{display:grid;grid-template-columns:340px 1fr;gap:1.5rem;margin-top:2rem}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.5rem}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:1.25rem}
+.seg button{background:none;border:0;color:var(--muted);padding:.6rem .2rem;font:600 .78rem "DM Sans",sans-serif;cursor:pointer}
+.seg button+button{border-left:1px solid var(--border)}
+.seg button.on{background:var(--accent);color:#0a0d12}
+label{display:block;font-size:.75rem;color:var(--muted);margin:.85rem 0 .3rem;font-family:"IBM Plex Mono",monospace;letter-spacing:.04em}
+input,textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:.55rem .7rem;font:.95rem "IBM Plex Mono",monospace}
+input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:110px;resize:vertical;font-size:.8rem;line-height:1.5}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.hint{font-size:.75rem;color:var(--muted);margin-top:.35rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:1.25rem}
+.stat{background:var(--surface);padding:1rem 1.1rem}
+.stat .k{font-family:"IBM Plex Mono",monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:"DM Serif Display",serif;font-size:1.6rem;line-height:1.2;margin-top:.2rem;font-variant-numeric:tabular-nums}
+.status{font-family:"IBM Plex Mono",monospace;font-size:.8rem;padding:.55rem .8rem;border-radius:4px;margin-bottom:1rem;border:1px solid}
+.s-good{color:var(--accent);border-color:rgba(0,201,167,.3);background:rgba(0,201,167,.07)}
+.s-warn{color:var(--gold);border-color:rgba(240,180,41,.3);background:rgba(240,180,41,.07)}
+.s-bad{color:var(--accent2);border-color:rgba(255,107,53,.35);background:rgba(255,107,53,.08)}
+.split{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--surface2);margin:.4rem 0 .5rem}
+.split i{display:block}
+.legend{display:flex;gap:1.25rem;font-size:.78rem;color:var(--muted);flex-wrap:wrap}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+canvas{width:100%;height:320px;display:block}
+/* downloads */
+.dl-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.25rem;margin-top:2rem}
+.dl{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1.5rem;transition:.25s}
+.dl:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.dl .tag{margin-bottom:.8rem}
+.t-py{background:rgba(74,158,255,.1);color:var(--accent3);border:1px solid rgba(74,158,255,.25)}
+.t-r{background:rgba(0,201,167,.1);color:var(--accent);border:1px solid rgba(0,201,167,.25)}
+.t-xlsx{background:rgba(0,201,167,.1);color:var(--accent);border:1px solid rgba(0,201,167,.25)}
+.t-csv,.t-zip{background:rgba(240,180,41,.1);color:var(--gold);border:1px solid rgba(240,180,41,.25)}
+.dl p{font-size:.83rem;color:var(--muted)}
+.dl .fn{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--text);margin-top:.8rem;opacity:.8}
+/* example */
+table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:1.5rem}
+th,td{padding:.7rem .8rem;text-align:left;border-bottom:1px solid var(--border)}
+th{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400}
+td.n{font-family:"IBM Plex Mono",monospace;text-align:right;font-variant-numeric:tabular-nums}
+th.n{text-align:right}
+.tabs{display:flex;gap:.5rem;margin-top:2rem}
+.tabs button{background:none;border:1px solid var(--border);color:var(--muted);padding:.45rem 1rem;border-radius:4px;font:600 .8rem "DM Sans",sans-serif;cursor:pointer}
+.tabs button.on{border-color:var(--accent);color:var(--accent)}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:1.25rem;overflow-x:auto;font:.8rem/1.7 "IBM Plex Mono",monospace;color:#c9d4e3;margin-top:-1px}
+pre .c{color:var(--muted)}
+.codehead{display:flex;justify-content:space-between;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:6px 6px 0 0;padding:.5rem 1rem;margin-top:1rem;font:.72rem "IBM Plex Mono",monospace;color:var(--muted)}
+.copy{background:none;border:1px solid var(--border);color:var(--muted);border-radius:3px;padding:2px 10px;font:inherit;cursor:pointer}
+.copy:hover{color:var(--accent);border-color:var(--accent)}
+.fig{margin-top:2rem;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#fff}
+.fig img{width:100%;display:block}
+footer{padding:2.5rem 0;color:var(--muted);font-size:.8rem}
+@media(max-width:900px){
+  nav{padding:0 16px}.nav-links{display:none}.wrap{padding:0 16px}
+  .grid3,.calc{grid-template-columns:1fr}.dl-grid{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){.dl-grid{grid-template-columns:1fr}table{font-size:.78rem}th,td{padding:.55rem .4rem}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/"><div class="logo-mark">QV</div><div class="logo-text">Quality<span>Vault</span></div></a>
+  <ul class="nav-links">
+    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#downloads">Downloads</a></li>
+    <li><a href="#example">Worked Example</a></li>
+    <li><a href="/">All Tools</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">Home</a> / <a href="/#categories">DMADV / DFSS</a> / Taguchi Loss Function</div>
+    <div class="section-label">// Robust Design · Cost of Quality</div>
+    <h1>Taguchi <em>Loss Function</em><br>calculator &amp; code</h1>
+    <p class="lead">Put a dollar figure on variation — not just on scrap. Calculate quality loss for a single part or a whole batch, then download the same calculator as an Excel workbook, Python or R, with a worked example.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="#calculator">Open calculator</a>
+      <a class="btn" href="taguchi-loss-toolkit.zip" download>⬇ Download toolkit (.zip)</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-label">// Three characteristics</div>
+    <h2>Pick the shape of your target</h2>
+    <p class="lead">A part at the spec limit and a part just inside it are nearly the same part. Taguchi's quadratic loss reflects that: cost grows smoothly as output drifts from ideal, instead of jumping from $0 to scrap at the limit.</p>
+    <div class="grid3" style="margin-top:2rem">
+      <div class="card"><span class="tag t-nib">NIB</span><h3>Nominal-Is-Best</h3>
+        <div class="formula">L(y) = k(y − m)²<br>k = A₀ / Δ²</div>
+        <p>A target value is ideal and deviation either way costs money. Diameters, fill weights, voltages.</p></div>
+      <div class="card"><span class="tag t-lib">LIB</span><h3>Larger-Is-Better</h3>
+        <div class="formula">L(y) = k / y²<br>k = A₀ · m²</div>
+        <p>More is always better. Bond strength, tensile strength, efficiency, life to failure.</p></div>
+      <div class="card"><span class="tag t-sib">SIB</span><h3>Smaller-Is-Better</h3>
+        <div class="formula">L(y) = k · y²<br>k = A₀ / m²</div>
+        <p>Zero is ideal. Leak rate, wear, shrinkage, noise, contamination, wait time.</p></div>
+    </div>
+    <p class="hint" style="margin-top:1.25rem">A₀ = cost to the customer or business when output reaches the tolerance / reference point (rework, warranty, give-away). Δ = tolerance half-width. m = target (NIB) or reference limit (LIB/SIB).</p>
+  </div>
+</section>
+
+<section id="calculator">
+  <div class="wrap">
+    <div class="section-label">// Interactive</div>
+    <h2>Loss calculator</h2>
+    <p class="lead">Pre-loaded with the worked example. Change the inputs or paste your own measurements — one per line, or comma-separated straight from Excel.</p>
+
+    <div class="calc">
+      <div class="panel">
+        <div class="seg" role="tablist">
+          <button data-m="nib" class="on">Nominal</button>
+          <button data-m="lib">Larger</button>
+          <button data-m="sib">Smaller</button>
+        </div>
+        <div id="f-nib">
+          <div class="row2">
+            <div><label for="tgt">Target m</label><input id="tgt" type="number" step="any" value="500"></div>
+            <div><label for="dlt">Tolerance Δ</label><input id="dlt" type="number" step="any" value="10"></div>
+          </div>
+        </div>
+        <div id="f-ref" hidden>
+          <label for="ref" id="ref-lbl">Reference m</label><input id="ref" type="number" step="any" value="80">
+        </div>
+        <label for="a0">A₀ — loss at limit ($)</label><input id="a0" type="number" step="any" value="2.50">
+        <label for="y1">Single value y</label><input id="y1" type="number" step="any" value="506">
+        <label for="data">Batch data (optional)</label>
+        <textarea id="data" spellcheck="false"></textarea>
+        <div class="hint" id="nval"></div>
+      </div>
+
+      <div>
+        <div class="stats">
+          <div class="stat"><div class="k">k constant</div><div class="v" id="o-k">–</div></div>
+          <div class="stat"><div class="k">L(y) single</div><div class="v" id="o-l">–</div></div>
+          <div class="stat"><div class="k">E[L] per unit</div><div class="v" id="o-el">–</div></div>
+          <div class="stat"><div class="k">Batch total</div><div class="v" id="o-tot">–</div></div>
+        </div>
+        <div class="status" id="o-status">–</div>
+        <div id="decomp">
+          <div class="legend"><span><b style="background:var(--accent3)"></b>From spread <span id="o-sv"></span></span><span><b style="background:var(--accent2)"></b>From off-target <span id="o-bv"></span></span></div>
+          <div class="split"><i id="bar-v" style="background:var(--accent3)"></i><i id="bar-b" style="background:var(--accent2)"></i></div>
+          <p class="hint" id="o-advice" style="margin-bottom:1rem"></p>
+        </div>
+        <div class="panel" style="padding:1rem"><canvas id="cv" aria-label="Loss curve chart"></canvas>
+          <div class="legend" style="margin-top:.5rem"><span><b style="background:var(--accent)"></b>Loss curve</span><span><b style="background:var(--accent2)"></b>A₀ limit</span><span><b style="background:var(--gold)"></b>Batch points</span><span><b style="background:#fff"></b>Single y</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="downloads">
+  <div class="wrap">
+    <div class="section-label">// Download. Open. Analyze.</div>
+    <h2>Run it on your own data</h2>
+    <p class="lead">The Excel, Python and R versions give identical results to the cent. Both read CSV or Excel, print a summary, plot the curve and individual losses, and export per-part results.</p>
+    <div class="dl-grid">
+      <a class="dl" href="taguchi_loss.py" download><span class="tag t-py">Python</span><h3>taguchi_loss.py</h3><p>Library + command line. numpy, pandas, matplotlib.</p><div class="fn">⬇ .py</div></a>
+      <a class="dl" href="taguchi_loss.R" download><span class="tag t-r">R</span><h3>taguchi_loss.R</h3><p>Base R only — no packages. Works in RStudio or Rscript.</p><div class="fn">⬇ .R</div></a>
+      <a class="dl" href="taguchi_loss_calculator.xlsx" download><span class="tag t-xlsx">Excel</span><h3>Loss workbook</h3><p>NIB, LIB, SIB sheets with live formulas and charts. No code needed.</p><div class="fn">⬇ .xlsx</div></a>
+      <a class="dl" href="example_data.csv" download><span class="tag t-csv">CSV</span><h3>example_data.csv</h3><p>30 parts: fill weight, bond strength, leak rate.</p><div class="fn">⬇ .csv</div></a>
+      <a class="dl" href="taguchi-loss-toolkit.zip" download><span class="tag t-zip">ZIP</span><h3>Full toolkit</h3><p>All files above plus README and example plots.</p><div class="fn">⬇ .zip</div></a>
+    </div>
+
+    <div class="tabs"><button class="on" data-t="py">Python</button><button data-t="r">R</button></div>
+    <div id="code-py">
+      <div class="codehead"><span>terminal / python</span><button class="copy">Copy</button></div>
+<pre><span class="c"># install once</span>
+pip install numpy pandas matplotlib
+
+<span class="c"># run the worked example (prints summaries, saves taguchi_example_python.png)</span>
+python taguchi_loss.py demo
+
+<span class="c"># single part</span>
+python taguchi_loss.py nib --target 500 --delta 10 --A0 2.50 --y 506
+
+<span class="c"># batch from your CSV, save the chart and per-part results</span>
+python taguchi_loss.py nib --target 500 --delta 10 --A0 2.50 \
+    --csv example_data.csv --column fill_weight_g --save nib.png --export nib_results.csv
+
+<span class="c"># or use it as a library</span>
+from taguchi_loss import NominalIsBest
+nib = NominalIsBest(target=500, delta=10, A0=2.50)
+print(nib.from_csv("example_data.csv", "fill_weight_g").summary())</pre>
+    </div>
+    <div id="code-r" hidden>
+      <div class="codehead"><span>R / RStudio</span><button class="copy">Copy</button></div>
+<pre><span class="c"># from a terminal: run the worked example (saves taguchi_example_R.png)</span>
+Rscript taguchi_loss.R demo
+
+<span class="c"># inside R or RStudio</span>
+source("taguchi_loss.R")
+nib <- taguchi_calc("nib", target = 500, delta = 10, A0 = 2.50)
+taguchi_eval(nib, 506)                                   <span class="c"># single part</span>
+
+b <- taguchi_from_csv(nib, "example_data.csv", "fill_weight_g")
+print(b)                                                 <span class="c"># batch summary</span>
+taguchi_plot(nib, b)                                     <span class="c"># curve + losses</span>
+taguchi_export_csv(b, "nib_results.csv")
+
+lib <- taguchi_calc("lib", m = 80, A0 = 400)
+sib <- taguchi_calc("sib", m = 5,  A0 = 300)</pre>
+    </div>
+  </div>
+</section>
+
+<section id="example">
+  <div class="wrap">
+    <div class="section-label">// Worked example</div>
+    <h2>One line, three characteristics</h2>
+    <p class="lead">A packaging line measures 30 units for fill weight, seal bond strength and leak rate. These are the results the workbook and both scripts produce from <code>example_data.csv</code>.</p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Characteristic</th><th>Type</th><th>Spec / A₀</th><th class="n">Mean</th><th class="n">E[L] / unit</th><th class="n">Batch (30)</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Fill weight (g)</td><td>NIB</td><td>500 ± 10 · $2.50</td><td class="n">502.49</td><td class="n">$0.38</td><td class="n">$11.46</td><td>Acceptable — 41% of loss is off-target</td></tr>
+        <tr><td>Bond strength (MPa)</td><td>LIB</td><td>≥ 80 · $400</td><td class="n">96.20</td><td class="n">$284.71</td><td class="n">$8,541.19</td><td>Caution — E[L] &gt; 50% of A₀</td></tr>
+        <tr><td>Leak rate (ccm)</td><td>SIB</td><td>≤ 5 · $300</td><td class="n">2.06</td><td class="n">$80.42</td><td class="n">$2,412.74</td><td>Acceptable — 1 unit over limit</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="hint" style="margin-top:1rem">Reading it: fill weight is fine, but re-centring the filler from 502.5 g to 500 g removes about 41% of its loss for free. Bond strength passes spec on every unit yet carries the largest cost — a capability problem that a pass/fail view hides.</p>
+    <div class="fig"><img src="taguchi_example_python.png" alt="Loss curves and individual losses for the three example characteristics" loading="lazy"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2025 Quality Vault. All tools provided for professional use. · <a href="/">Back to all tools</a></div>
+</footer>
+
+<script>
+(function(){
+  const EX = {
+    nib:"499.5, 503.4, 495.3, 507.8, 504.9, 501.4, 501.3, 503.7, 501.5, 501.6, 505.2, 504.5, 502.3, 502.2, 503.1, 500.2, 501.0, 504.6, 502.0, 497.3, 500.7, 505.0, 501.6, 501.9, 504.9, 509.4, 499.8, 507.6, 497.8, 503.2",
+    lib:"81.5, 104.2, 99.5, 102.2, 84.0, 98.2, 87.3, 87.9, 96.6, 99.9, 93.8, 86.3, 84.6, 105.0, 97.3, 98.5, 111.7, 84.7, 115.0, 120.4, 106.6, 99.4, 86.0, 101.0, 88.0, 91.8, 89.4, 94.6, 103.6, 87.0",
+    sib:"0.82, 0.83, 0.88, 1.17, 0.65, 0.36, 6.95, 3.85, 1.67, 4.23, 4.83, 1.95, 2.42, 1.1, 0.93, 2.79, 0.33, 2.03, 1.39, 0.76, 0.27, 3.48, 4.5, 1.82, 2.61, 0.97, 2.03, 1.83, 0.73, 3.48"
+  };
+  const DEF = {nib:{a0:2.5,y:506}, lib:{ref:80,a0:400,y:85}, sib:{ref:5,a0:300,y:3.2}};
+  const $ = id => document.getElementById(id);
+  let method = "nib";
+
+  const money = v => !isFinite(v) ? "∞" : "$" + (Math.abs(v) >= 1000 ? v.toLocaleString(undefined,{maximumFractionDigits:0}) : v.toFixed(2));
+  const kfmt = v => Math.abs(v) >= 1e4 ? v.toExponential(3) : (Math.abs(v) < 0.01 ? v.toExponential(3) : v.toPrecision(4));
+
+  function lossFn(k, m){
+    if (method === "nib") return y => k*(y-m)**2;
+    if (method === "lib") return y => y > 0 ? k/(y*y) : Infinity;
+    return y => k*y*y;
+  }
+  function parse(txt){ return txt.split(/[\s,;\t]+/).map(Number).filter(v => txt.trim() && isFinite(v)); }
+
+  function setMethod(m, reset){
+    method = m;
+    document.querySelectorAll(".seg button").forEach(b => b.classList.toggle("on", b.dataset.m === m));
+    $("f-nib").hidden = m !== "nib"; $("f-ref").hidden = m === "nib";
+    $("ref-lbl").textContent = m === "lib" ? "Reference (minimum) m" : "Boundary (maximum) m";
+    $("decomp").style.display = m === "nib" ? "" : "none";
+    if (reset){
+      const d = DEF[m];
+      if (m !== "nib") $("ref").value = d.ref;
+      $("a0").value = d.a0; $("y1").value = d.y; $("data").value = EX[m];
+    }
+    calc();
+  }
+
+  function calc(){
+    const A0 = +$("a0").value, y = $("y1").value === "" ? NaN : +$("y1").value;
+    const m = method === "nib" ? +$("tgt").value : +$("ref").value;
+    const ref = method === "nib" ? +$("dlt").value : m;
+    const st = $("o-status");
+    if (!(A0 > 0) || !(ref > 0)) { st.className="status s-bad"; st.textContent="A₀ and the tolerance / reference must be positive."; return; }
+    const k = method === "nib" ? A0/ref**2 : method === "lib" ? A0*ref**2 : A0/ref**2;
+    const L = lossFn(k, method === "nib" ? m : 0);
+    const data = parse($("data").value);
+    $("nval").textContent = data.length ? data.length + " values read" : "No batch data — showing single value only";
+
+    $("o-k").textContent = kfmt(k);
+    const ly = isFinite(y) ? L(y) : NaN;
+    $("o-l").textContent = isFinite(y) ? money(ly) : "–";
+
+    let el = NaN, tot = NaN, mean = NaN;
+    if (data.length){
+      const ls = data.map(L); tot = ls.reduce((a,b)=>a+b,0); el = tot/data.length;
+      mean = data.reduce((a,b)=>a+b,0)/data.length;
+    }
+    $("o-el").textContent = data.length ? money(el) : "–";
+    $("o-tot").textContent = data.length ? money(tot) : "–";
+
+    // status — same rules as the Python / R scripts
+    let msg, cls;
+    if (data.length){
+      if (el > A0){ msg="CRITICAL — average loss exceeds A₀"; cls="s-bad"; }
+      else if (el > .5*A0){ msg="CAUTION — average loss is over 50% of A₀"; cls="s-warn"; }
+      else if (method==="nib" && Math.abs(mean-m) > .5*ref){ msg="BIAS WARNING — mean is well off target"; cls="s-warn"; }
+      else if (method==="lib" && mean < ref){ msg="MEAN BELOW REFERENCE — output is low"; cls="s-warn"; }
+      else if (method==="sib" && mean > ref){ msg="MEAN EXCEEDS LIMIT — output too high"; cls="s-bad"; }
+      else { msg="ACCEPTABLE — average loss is " + (el/A0*100).toFixed(1) + "% of A₀"; cls="s-good"; }
+      const out = data.filter(v => method==="nib" ? Math.abs(v-m)>ref : method==="lib" ? v<ref : v>ref).length;
+      if (out) msg += " · " + out + " value" + (out>1?"s":"") + " beyond the limit";
+    } else if (isFinite(y)){
+      const pct = ly/A0*100;
+      cls = ly > A0 ? "s-bad" : ly > .5*A0 ? "s-warn" : "s-good";
+      msg = (ly > A0 ? "Beyond the limit" : ly > .5*A0 ? "Caution" : "Good") + " — loss is " + pct.toFixed(1) + "% of A₀";
+    } else { msg = "Enter a value or batch data"; cls = "s-warn"; }
+    st.className = "status " + cls; st.textContent = msg;
+
+    if (method === "nib" && data.length){
+      const v = k * data.reduce((a,b)=>a+(b-mean)**2,0)/data.length, b = k*(mean-m)**2;
+      const pv = el ? v/el*100 : 0;
+      $("o-sv").textContent = money(v) + " (" + pv.toFixed(0) + "%)";
+      $("o-bv").textContent = money(b) + " (" + (100-pv).toFixed(0) + "%)";
+      $("bar-v").style.width = pv + "%"; $("bar-b").style.width = (100-pv) + "%";
+      $("o-advice").textContent = pv >= 50
+        ? "Most of the loss comes from spread — reduce variation (DOE, tighter controls)."
+        : "Most of the loss comes from being off-centre — re-target the process mean to " + m + ". Usually the cheapest fix.";
+      $("decomp").style.display = "";
+    } else if (method === "nib") $("decomp").style.display = "none";
+
+    draw(L, k, A0, m, ref, y, data);
+  }
+
+  function draw(L, k, A0, m, ref, y, data){
+    const cv = $("cv"), dpr = window.devicePixelRatio || 1;
+    const W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W*dpr; cv.height = H*dpr;
+    const c = cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,H);
+    const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+    let x0, x1;
+    if (method==="nib"){ x0 = m-2*ref; x1 = m+2*ref; }
+    else if (method==="lib"){ x0 = ref*.3; x1 = ref*2.5; }
+    else { x0 = 0; x1 = ref*1.5; }
+    const pts = data.concat(isFinite(y)?[y]:[]);
+    if (pts.length){ x0 = Math.min(x0, ...pts); x1 = Math.max(x1, ...pts); if (method!=="nib") x0 = Math.max(x0, method==="lib"?ref*.05:0); }
+    const raw = A0*2.2/4, pw10 = 10**Math.floor(Math.log10(raw));
+    const step = [1,2,2.5,5,10].map(f=>f*pw10).find(s=>s>=raw);
+    const nTick = Math.ceil(A0*2.2/step), ymax = step*nTick;
+    const P = {l:56,r:14,t:14,b:30}, pw = W-P.l-P.r, ph = H-P.t-P.b;
+    const X = v => P.l + (v-x0)/(x1-x0)*pw, Y = v => P.t + ph - Math.min(v,ymax*1.02)/ymax*ph;
+
+    c.font = "11px 'IBM Plex Mono', monospace"; c.fillStyle = css("--muted"); c.strokeStyle = css("--border"); c.lineWidth = 1;
+    for (let i=0;i<=nTick;i++){ const v = step*i, yy = Y(v); c.beginPath(); c.moveTo(P.l,yy); c.lineTo(W-P.r,yy); c.stroke(); c.textAlign="right"; c.fillText(money(v), P.l-6, yy+4); }
+    c.textAlign="center";
+    for (let i=0;i<=5;i++){ const v = x0+(x1-x0)*i/5; c.fillText(+v.toPrecision(4), X(v), H-10); }
+
+    // limits
+    c.setLineDash([3,4]); c.strokeStyle = css("--muted");
+    const vl = method==="nib" ? [m-ref, m, m+ref] : [ref];
+    vl.forEach(v => { c.beginPath(); c.moveTo(X(v),P.t); c.lineTo(X(v),P.t+ph); c.stroke(); });
+    c.strokeStyle = css("--accent2"); c.setLineDash([6,4]);
+    c.beginPath(); c.moveTo(P.l,Y(A0)); c.lineTo(W-P.r,Y(A0)); c.stroke(); c.setLineDash([]);
+
+    // curve
+    c.save(); c.beginPath(); c.rect(P.l,P.t,pw,ph); c.clip();
+    c.strokeStyle = css("--accent"); c.lineWidth = 2.4; c.beginPath();
+    for (let i=0;i<=300;i++){ const v = x0+(x1-x0)*i/300, l = L(v); const yy = Y(isFinite(l)?l:ymax*2); i?c.lineTo(X(v),yy):c.moveTo(X(v),yy); }
+    c.stroke();
+    c.fillStyle = css("--gold"); c.globalAlpha = .8;
+    data.forEach(v => { c.beginPath(); c.arc(X(v), Y(L(v)), 3.5, 0, 7); c.fill(); });
+    c.globalAlpha = 1;
+    if (isFinite(y)){ c.fillStyle="#fff"; c.strokeStyle=css("--bg"); c.lineWidth=2; c.beginPath(); c.arc(X(y), Y(L(y)), 6, 0, 7); c.fill(); c.stroke(); }
+    c.restore();
+  }
+
+  document.querySelectorAll(".seg button").forEach(b => b.onclick = () => setMethod(b.dataset.m, true));
+  ["tgt","dlt","ref","a0","y1","data"].forEach(id => $(id).addEventListener("input", calc));
+  window.addEventListener("resize", calc);
+
+  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("on", x===b));
+    $("code-py").hidden = b.dataset.t !== "py"; $("code-r").hidden = b.dataset.t !== "r";
+  });
+  document.querySelectorAll(".copy").forEach(b => b.onclick = () => {
+    const t = b.closest("div").nextElementSibling.innerText;
+    navigator.clipboard && navigator.clipboard.writeText(t).then(() => { b.textContent="Copied"; setTimeout(()=>b.textContent="Copy",1500); });
+  });
+
+  $("data").value = EX.nib;
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(calc);
+  setMethod("nib", false);
+})();
+</script>
+</body>
+</html>

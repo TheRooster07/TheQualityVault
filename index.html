@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quality Vault — Precision Tools for Quality Engineering</title>
+<title>Quality Vault — Precision Tools for Quality Work</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -514,6 +514,27 @@
     line-height: 1.6;
   }
 
+  /* ── COMING SOON: any card still linking to "#" ── */
+  .tool-card[href="#"], .rel-card[href="#"], .chart-tile[href="#"] {
+    opacity: 0.45;
+    pointer-events: none;
+    position: relative;
+  }
+  .tool-card[href="#"]::after, .rel-card[href="#"]::after, .chart-tile[href="#"]::after {
+    content: 'COMING SOON';
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+  .tool-card[href="#"] .tool-dl { visibility: hidden; }
+
   /* ── STAT HYPOTHESIS SECTION ── */
   .stat-section {
     padding: 100px 3rem;
@@ -1019,12 +1040,12 @@
       </div>
     </a>
 
-    <a href="#" class="cat-card" style="--card-accent: #f0b429">
+    <a href="taguchi-loss/" class="cat-card" style="--card-accent: #f0b429">
       <div class="cat-icon">🏗️</div>
       <div class="cat-name">DMADV / DFSS</div>
       <div class="cat-desc">Design for Six Sigma — build quality in from the start. QFD, CTQ trees, transfer functions, and tolerance design.</div>
       <div class="cat-tools">
-        <span class="tag">QFD</span><span class="tag">CTQ Tree</span><span class="tag">TRIZ</span><span class="tag">Pugh Matrix</span><span class="tag">DOE</span>
+        <span class="tag">QFD</span><span class="tag">CTQ Tree</span><span class="tag">TRIZ</span><span class="tag">Pugh Matrix</span><span class="tag">DOE</span><span class="tag">Taguchi Loss</span>
       </div>
     </a>
 
@@ -1084,6 +1105,25 @@
     <p class="section-desc" style="margin: 0.5rem auto 0; text-align:center;">Spreadsheets, interactive apps, and calculators ready to use on day one.</p>
   </div>
   <div class="tools-grid">
+
+    <!-- taguchi-wired -->
+    <a href="taguchi-loss/" class="tool-card">
+      <div class="tool-header">
+        <span class="tool-type app">APP + CODE</span>
+        <div class="tool-dl">↗</div>
+      </div>
+      <div class="tool-name">Taguchi Loss Function</div>
+      <div class="tool-desc">Put a dollar value on variation. Nominal, Larger and Smaller-is-Better loss for single parts or batches, with spread vs off-target breakdown. Live calculator plus Python and R downloads.</div>
+    </a>
+
+    <a href="taguchi-loss/taguchi_loss_calculator.xlsx" class="tool-card" download>
+      <div class="tool-header">
+        <span class="tool-type xlsx">XLSX</span>
+        <div class="tool-dl">⬇</div>
+      </div>
+      <div class="tool-name">Taguchi Loss Workbook</div>
+      <div class="tool-desc">Excel version of the loss calculator. Paste up to 500 measurements, get k, E[L], batch loss, status and loss curve chart. Includes a worked example.</div>
+    </a>
 
     <a href="#" class="tool-card">
       <div class="tool-header">
