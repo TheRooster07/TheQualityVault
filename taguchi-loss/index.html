@@ -98,6 +98,37 @@ pre .c{color:var(--muted)}
 .copy:hover{color:var(--accent);border-color:var(--accent)}
 .fig{margin-top:2rem;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#fff}
 .fig img{width:100%;display:block}
+/* preview viewer */
+button.dl{font:inherit;text-align:left;cursor:pointer;width:100%}
+.dl .fn{display:flex;justify-content:space-between}
+.safe{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:1.5rem}
+.safe div{border-left:2px solid var(--accent);padding:.2rem 0 .2rem 1rem}
+.safe b{display:block;font-size:.9rem;margin-bottom:.2rem}
+.safe span{font-size:.82rem;color:var(--muted)}
+.qv-modal{position:fixed;inset:0;z-index:200;background:rgba(5,7,10,.78);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:24px}
+.qv-modal.open{display:flex}
+.qv-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;width:min(1000px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.qv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.1rem 1.25rem;border-bottom:1px solid var(--border)}
+.qv-head h3{font-family:"IBM Plex Mono",monospace;font-size:1rem;margin:0}
+.qv-meta{font-size:.78rem;color:var(--muted);margin-top:.25rem}
+.qv-x{background:none;border:1px solid var(--border);color:var(--muted);width:34px;height:34px;border-radius:4px;font-size:1.1rem;cursor:pointer;flex:none}
+.qv-x:hover{color:var(--accent);border-color:var(--accent)}
+.qv-body{overflow:auto;flex:1;min-height:200px;background:var(--bg)}
+.qv-code{margin:0;border:0;border-radius:0;padding:1rem 0;font:.78rem/1.65 "IBM Plex Mono",monospace;counter-reset:ln;white-space:pre;background:var(--bg)}
+.qv-code span.l{display:block;padding:0 1.25rem 0 0}
+.qv-code span.l::before{counter-increment:ln;content:counter(ln);display:inline-block;width:3.2em;margin-right:1.2em;text-align:right;color:#3a4558;user-select:none}
+.qv-code .cm{color:#6b7a92}.qv-code .st{color:#e6c07b}.qv-code .kw{color:#4a9eff}
+.qv-info{padding:1.25rem 1.5rem;font-size:.9rem;color:var(--text)}
+.qv-info p{color:var(--muted);margin:.4rem 0 1rem}
+.qv-info table{margin-top:.5rem}
+.qv-hash{display:flex;align-items:center;gap:.6rem;padding:.75rem 1.25rem;border-top:1px solid var(--border);font:.72rem "IBM Plex Mono",monospace;color:var(--muted);flex-wrap:wrap}
+.qv-hash code{color:var(--text);word-break:break-all;flex:1;min-width:200px}
+.qv-foot{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-end;align-items:center;padding:1rem 1.25rem;border-top:1px solid var(--border)}
+.qv-foot .note{margin-right:auto;font-size:.78rem;color:var(--muted);max-width:420px}
+.qv-foot .btn{padding:9px 18px;font-size:.85rem}
+.zl{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-family:"IBM Plex Mono",monospace;font-size:.8rem}
+.zl button{background:none;border:1px solid var(--border);color:var(--accent);border-radius:3px;padding:2px 10px;font:inherit;cursor:pointer}
+@media(max-width:900px){.safe{grid-template-columns:1fr}.qv-modal{padding:0}.qv-box{border-radius:0;height:100%}}
 footer{padding:2.5rem 0;color:var(--muted);font-size:.8rem}
 @media(max-width:900px){
   nav{padding:0 16px}.nav-links{display:none}.wrap{padding:0 16px}
@@ -127,7 +158,7 @@ footer{padding:2.5rem 0;color:var(--muted);font-size:.8rem}
     <p class="lead">Put a dollar figure on variation — not just on scrap. Calculate quality loss for a single part or a whole batch, then download the same calculator as an Excel workbook, Python or R, with a worked example.</p>
     <div class="btn-row">
       <a class="btn primary" href="#calculator">Open calculator</a>
-      <a class="btn" href="taguchi-loss-toolkit.zip" download>⬇ Download toolkit (.zip)</a>
+      <button type="button" class="btn" data-file="taguchi-loss-toolkit.zip">👁 Preview &amp; download toolkit</button>
     </div>
   </div>
 </header>
@@ -208,11 +239,16 @@ footer{padding:2.5rem 0;color:var(--muted);font-size:.8rem}
     <h2>Run it on your own data</h2>
     <p class="lead">The Excel, Python and R versions give identical results to the cent. Both read CSV or Excel, print a summary, plot the curve and individual losses, and export per-part results.</p>
     <div class="dl-grid">
-      <a class="dl" href="taguchi_loss.py" download><span class="tag t-py">Python</span><h3>taguchi_loss.py</h3><p>Library + command line. numpy, pandas, matplotlib.</p><div class="fn">⬇ .py</div></a>
-      <a class="dl" href="taguchi_loss.R" download><span class="tag t-r">R</span><h3>taguchi_loss.R</h3><p>Base R only — no packages. Works in RStudio or Rscript.</p><div class="fn">⬇ .R</div></a>
-      <a class="dl" href="taguchi_loss_calculator.xlsx" download><span class="tag t-xlsx">Excel</span><h3>Loss workbook</h3><p>NIB, LIB, SIB sheets with live formulas and charts. No code needed.</p><div class="fn">⬇ .xlsx</div></a>
-      <a class="dl" href="example_data.csv" download><span class="tag t-csv">CSV</span><h3>example_data.csv</h3><p>30 parts: fill weight, bond strength, leak rate.</p><div class="fn">⬇ .csv</div></a>
-      <a class="dl" href="taguchi-loss-toolkit.zip" download><span class="tag t-zip">ZIP</span><h3>Full toolkit</h3><p>All files above plus README and example plots.</p><div class="fn">⬇ .zip</div></a>
+      <button type="button" class="dl" data-file="taguchi_loss.py"><span class="tag t-py">Python</span><h3>taguchi_loss.py</h3><p>Library + command line. numpy, pandas, matplotlib.</p><div class="fn"><span>👁 Preview</span><span>.py</span></div></button>
+      <button type="button" class="dl" data-file="taguchi_loss.R"><span class="tag t-r">R</span><h3>taguchi_loss.R</h3><p>Base R only — no packages. Works in RStudio or Rscript.</p><div class="fn"><span>👁 Preview</span><span>.R</span></div></button>
+      <button type="button" class="dl" data-file="taguchi_loss_calculator.xlsx"><span class="tag t-xlsx">Excel</span><h3>Loss workbook</h3><p>NIB, LIB, SIB sheets with live formulas and charts. No macros.</p><div class="fn"><span>👁 Preview</span><span>.xlsx</span></div></button>
+      <button type="button" class="dl" data-file="example_data.csv"><span class="tag t-csv">CSV</span><h3>example_data.csv</h3><p>30 parts: fill weight, bond strength, leak rate.</p><div class="fn"><span>👁 Preview</span><span>.csv</span></div></button>
+      <button type="button" class="dl" data-file="taguchi-loss-toolkit.zip"><span class="tag t-zip">ZIP</span><h3>Full toolkit</h3><p>All files above plus README and example plots.</p><div class="fn"><span>👁 Preview</span><span>.zip</span></div></button>
+    </div>
+    <div class="safe">
+      <div><b>Preview before you download</b><span>Every file opens in a viewer first, so you can read the code or see what's inside before anything touches your computer.</span></div>
+      <div><b>Plain text and formulas only</b><span>The .py and .R files are readable source code. The workbook is .xlsx, a format that cannot contain macros.</span></div>
+      <div><b>Check the fingerprint</b><span>Each preview shows the file's SHA-256 checksum, also listed in <a href="SHA256SUMS.txt" target="_blank" rel="noopener">SHA256SUMS.txt</a> and matched by the public source on GitHub.</span></div>
     </div>
 
     <div class="tabs"><button class="on" data-t="py">Python</button><button data-t="r">R</button></div>
@@ -276,6 +312,23 @@ sib <- taguchi_calc("sib", m = 5,  A0 = 300)</pre>
     <div class="fig"><img src="taguchi_example_python.png" alt="Loss curves and individual losses for the three example characteristics" loading="lazy"></div>
   </div>
 </section>
+
+<div class="qv-modal" id="qv-modal" role="dialog" aria-modal="true" aria-labelledby="qv-title">
+  <div class="qv-box">
+    <div class="qv-head">
+      <div><h3 id="qv-title">file</h3><div class="qv-meta" id="qv-meta"></div></div>
+      <button type="button" class="qv-x" id="qv-close" aria-label="Close preview">✕</button>
+    </div>
+    <div class="qv-body" id="qv-body"></div>
+    <div class="qv-hash"><span>SHA-256</span><code id="qv-sha">calculating…</code></div>
+    <div class="qv-foot">
+      <span class="note" id="qv-note"></span>
+      <a class="btn" id="qv-gh" target="_blank" rel="noopener">View on GitHub ↗</a>
+      <button type="button" class="btn" id="qv-copy">Copy code</button>
+      <a class="btn primary" id="qv-dl" download>⬇ Download</a>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="wrap">© 2025 Quality Vault. All tools provided for professional use. · <a href="/">Back to all tools</a></div>
@@ -426,6 +479,117 @@ sib <- taguchi_calc("sib", m = 5,  A0 = 300)</pre>
     const t = b.closest("div").nextElementSibling.innerText;
     navigator.clipboard && navigator.clipboard.writeText(t).then(() => { b.textContent="Copied"; setTimeout(()=>b.textContent="Copy",1500); });
   });
+
+  // ── file preview viewer ─────────────────────────────────────────────
+  const GH = "https://github.com/TheRooster07/TheQualityVault/blob/main/taguchi-loss/";
+  const FILES = {
+    "taguchi_loss.py": {kind:"code", lang:"py", label:"Python source"},
+    "taguchi_loss.R": {kind:"code", lang:"r", label:"R source"},
+    "example_data.csv": {kind:"csv", label:"Comma-separated data"},
+    "README.md": {kind:"code", lang:"md", label:"Read-me"},
+    "taguchi_loss_calculator.xlsx": {kind:"xlsx", label:"Excel workbook (.xlsx — no macros)"},
+    "taguchi-loss-toolkit.zip": {kind:"zip", label:"Zip archive"},
+    "taguchi_example_python.png": {kind:"img", label:"Image"},
+    "taguchi_example_R.png": {kind:"img", label:"Image"}
+  };
+  const ZIP = [["taguchi_loss_calculator.xlsx","67 KB"],["taguchi_loss.py","28 KB"],["taguchi_loss.R","14 KB"],
+               ["example_data.csv","1 KB"],["README.md","2 KB"],["taguchi_example_python.png","297 KB"],["taguchi_example_R.png","118 KB"]];
+  const M = $("qv-modal"), body = $("qv-body");
+  const esc = t => t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const kb = n => n < 1024 ? n + " bytes" : (n/1024).toFixed(1) + " KB";
+  let lastFocus = null, codeText = "";
+
+  function highlight(line, lang){
+    if (lang === "md") return esc(line);
+    // split off a trailing comment (outside quotes), then colour strings and keywords
+    let inS = null, cut = -1;
+    for (let i = 0; i < line.length; i++){
+      const c = line[i];
+      if (inS){ if (c === "\\") i++; else if (c === inS) inS = null; }
+      else if (c === '"' || c === "'") inS = c;
+      else if (c === "#"){ cut = i; break; }
+    }
+    const code = cut < 0 ? line : line.slice(0, cut), cm = cut < 0 ? "" : line.slice(cut);
+    const kw = lang === "py"
+      ? /\b(def|class|return|if|elif|else|for|while|in|import|from|as|with|try|except|raise|lambda|None|True|False|and|or|not|is)\b/g
+      : /\b(function|return|if|else|for|while|in|TRUE|FALSE|NULL|NA|Inf|switch|stop|library|structure)\b/g;
+    let out = "", last = 0, re = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, m;
+    while ((m = re.exec(code))){
+      out += esc(code.slice(last, m.index)).replace(kw, '<span class="kw">$1</span>');
+      out += '<span class="st">' + esc(m[0]) + "</span>"; last = re.lastIndex;
+    }
+    out += esc(code.slice(last)).replace(kw, '<span class="kw">$1</span>');
+    return out + (cm ? '<span class="cm">' + esc(cm) + "</span>" : "");
+  }
+
+  async function sha256(buf){
+    if (!(window.crypto && crypto.subtle)) return "open the page over https to see the checksum";
+    const h = await crypto.subtle.digest("SHA-256", buf);
+    return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+
+  async function openFile(name){
+    const info = FILES[name]; if (!info) return;
+    lastFocus = document.activeElement;
+    $("qv-title").textContent = name; $("qv-meta").textContent = info.label + " · loading…";
+    $("qv-sha").textContent = "calculating…"; body.innerHTML = ""; codeText = "";
+    $("qv-dl").href = name; $("qv-dl").setAttribute("download", name);
+    $("qv-gh").href = GH + name;
+    $("qv-copy").style.display = info.kind === "code" || info.kind === "csv" ? "" : "none";
+    $("qv-note").textContent = info.kind === "code" ? "Read it first — this is exactly the file you'll download."
+      : info.kind === "xlsx" ? "Opens in Excel, LibreOffice or Google Sheets. Contains formulas only."
+      : info.kind === "zip" ? "Preview any file inside before downloading the whole set." : "";
+    M.classList.add("open"); document.body.style.overflow = "hidden"; $("qv-close").focus();
+    try {
+      const res = await fetch(name, {cache:"no-store"});
+      if (!res.ok) throw new Error(res.status);
+      const buf = await res.arrayBuffer();
+      sha256(buf).then(h => $("qv-sha").textContent = h);
+      if (info.kind === "code" || info.kind === "csv"){
+        codeText = new TextDecoder().decode(buf);
+        const lines = codeText.replace(/\n$/,"").split("\n");
+        $("qv-meta").textContent = `${info.label} · ${lines.length} lines · ${kb(buf.byteLength)}`;
+        if (info.kind === "csv"){
+          const rows = lines.map(l => l.split(","));
+          body.innerHTML = '<div class="qv-info" style="overflow:auto"><table><thead><tr>' +
+            rows[0].map(h => "<th>" + esc(h) + "</th>").join("") + "</tr></thead><tbody>" +
+            rows.slice(1).map(r => "<tr>" + r.map((c,i) => '<td class="' + (i ? "n" : "") + '">' + esc(c) + "</td>").join("") + "</tr>").join("") +
+            "</tbody></table></div>";
+        } else {
+          body.innerHTML = '<pre class="qv-code">' + lines.map(l => '<span class="l">' + (highlight(l, info.lang) || " ") + "</span>").join("") + "</pre>";
+        }
+      } else if (info.kind === "img"){
+        $("qv-meta").textContent = `${info.label} · ${kb(buf.byteLength)}`;
+        body.innerHTML = '<div class="qv-info" style="background:#fff"><img src="' + name + '" alt="" style="width:100%;display:block"></div>';
+      } else if (info.kind === "xlsx"){
+        $("qv-meta").textContent = `${info.label} · ${kb(buf.byteLength)}`;
+        body.innerHTML = `<div class="qv-info"><b>What's inside</b>
+          <p>Four sheets. Yellow cells are inputs; everything else is a standard Excel formula you can click and inspect.</p>
+          <table><thead><tr><th>Sheet</th><th>Contents</th></tr></thead><tbody>
+          <tr><td>Guide</td><td>How to use, formulas, definitions, colour key</td></tr>
+          <tr><td>NIB</td><td>Nominal-is-best: inputs, L(y), batch summary, spread vs off-target split, 500-row data area, loss-curve chart</td></tr>
+          <tr><td>LIB</td><td>Larger-is-better: same layout with k = A₀·m²</td></tr>
+          <tr><td>SIB</td><td>Smaller-is-better: same layout with k = A₀/m²</td></tr></tbody></table>
+          <p style="margin-top:1.25rem"><b style="color:var(--text)">No macros, no external links.</b> The .xlsx format cannot store macros (that would need .xlsm), so Excel will not show a security prompt. It gives the same results as the Python and R code to the cent.</p></div>`;
+      } else if (info.kind === "zip"){
+        $("qv-meta").textContent = `${info.label} · ${ZIP.length} files · ${kb(buf.byteLength)}`;
+        body.innerHTML = '<div class="qv-info"><b>Contents</b><p>Every file is also listed on this page, so you can preview each one on its own.</p>' +
+          ZIP.map(([f,z]) => `<div class="zl"><span>${f} <span style="color:var(--muted)">· ${z}</span></span><button type="button" data-file="${f}">Preview</button></div>`).join("") + "</div>";
+      }
+    } catch (e){
+      $("qv-meta").textContent = info.label;
+      body.innerHTML = '<div class="qv-info"><p>Preview could not load (' + esc(String(e.message || e)) + '). You can still read the file on GitHub.</p></div>';
+      $("qv-sha").textContent = "—";
+    }
+  }
+  function closeFile(){ M.classList.remove("open"); document.body.style.overflow = ""; if (lastFocus) lastFocus.focus(); }
+  document.addEventListener("click", e => { const b = e.target.closest("[data-file]"); if (b){ e.preventDefault(); openFile(b.dataset.file); } });
+  $("qv-close").onclick = closeFile;
+  M.addEventListener("click", e => { if (e.target === M) closeFile(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && M.classList.contains("open")) closeFile(); });
+  $("qv-copy").onclick = () => navigator.clipboard && navigator.clipboard.writeText(codeText).then(() => {
+    $("qv-copy").textContent = "Copied"; setTimeout(() => $("qv-copy").textContent = "Copy code", 1500); });
+  if (location.hash && FILES[location.hash.slice(1)]) openFile(location.hash.slice(1));
 
   $("data").value = EX.nib;
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(calc);

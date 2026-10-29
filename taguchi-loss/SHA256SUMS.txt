@@ -1,0 +1,8 @@
+# SHA-256 checksums — TheQualityVault.com/taguchi-loss
+# Windows:  certutil -hashfile <file> SHA256     Mac/Linux:  shasum -a 256 <file>
+3f22a48ccc6aa100f4146a3f6a42543df89ef5985d954070fb8b761407d432da  taguchi_loss.py
+1332117d59b4b3cde1c842e26a822c433e299f47b965634354831c87fcc5e39e  taguchi_loss.R
+cc2c54d0ed6dc54f1159b0abda2d52f6cf0bc469afa864142732ceedaebd211e  taguchi_loss_calculator.xlsx
+8efa7c0531fa05d906b9ab5d33d2444d57b3e9471edcd1fee317745b3f7106f8  example_data.csv
+f8805eb07c1163440344dd756e83b36c1f776ee0781565a1fe35700c20e52df1  taguchi-loss-toolkit.zip
+67974a41f0afc432b5284ddcced0108f4ba4fb80c50dd03dab76d7e13b5ec3f8  README.md

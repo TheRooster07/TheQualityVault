@@ -514,26 +514,19 @@
     line-height: 1.6;
   }
 
-  /* ── COMING SOON: any card still linking to "#" ── */
-  .tool-card[href="#"], .rel-card[href="#"], .chart-tile[href="#"] {
-    opacity: 0.45;
-    pointer-events: none;
-    position: relative;
-  }
-  .tool-card[href="#"]::after, .rel-card[href="#"]::after, .chart-tile[href="#"]::after {
+  /* ── UNFINISHED TOOLS (set by QV_SOON_MODE in the script at the bottom) ── */
+  .qv-hidden { display: none !important; }
+  .qv-soon { opacity: 0.45; pointer-events: none; position: relative; }
+  .tool-card.qv-soon::after, .rel-card.qv-soon::after, .chart-tile.qv-soon::after, .cat-card.qv-soon::after {
     content: 'COMING SOON';
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 2px 6px;
-    border-radius: 2px;
+    position: absolute; right: 12px; bottom: 12px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em;
+    color: var(--muted); border: 1px solid var(--border); padding: 2px 6px; border-radius: 2px;
+    transform: none; background: none; height: auto; left: auto;
   }
-  .tool-card[href="#"] .tool-dl { visibility: hidden; }
+  .tool-card.qv-soon .tool-dl { visibility: hidden; }
+  .cats-grid.qv-trim { background: none; border: none; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(280px, 340px)); }
+  .cats-grid.qv-trim .cat-card { border: 1px solid var(--border); border-radius: 6px; }
 
   /* ── STAT HYPOTHESIS SECTION ── */
   .stat-section {
@@ -1116,10 +1109,10 @@
       <div class="tool-desc">Put a dollar value on variation. Nominal, Larger and Smaller-is-Better loss for single parts or batches, with spread vs off-target breakdown. Live calculator plus Python and R downloads.</div>
     </a>
 
-    <a href="taguchi-loss/taguchi_loss_calculator.xlsx" class="tool-card" download>
+    <a href="taguchi-loss/#taguchi_loss_calculator.xlsx" class="tool-card">
       <div class="tool-header">
         <span class="tool-type xlsx">XLSX</span>
-        <div class="tool-dl">⬇</div>
+        <div class="tool-dl">👁</div>
       </div>
       <div class="tool-name">Taguchi Loss Workbook</div>
       <div class="tool-desc">Excel version of the loss calculator. Paste up to 500 measurements, get k, E[L], batch loss, status and loss curve chart. Includes a worked example.</div>
@@ -1452,6 +1445,57 @@
   document.querySelectorAll('.cat-card, .tool-card, .rel-card, .resource-card').forEach((el, i) => {
     el.style.transitionDelay = `${(i % 8) * 50}ms`;
   });
+  // ── UNFINISHED TOOLS ───────────────────────────────────────────────
+  // 'hide' = unfinished tools disappear (and any section left empty)
+  // 'dim'  = shown faded with a "Coming soon" label
+  // 'show' = everything shown as normal
+  // A tool counts as finished as soon as its card links somewhere other than "#".
+  // For the hypothesis-test list, add class="test-item live" (or put a link inside it).
+  const QV_SOON_MODE = 'hide';
+
+  (function () {
+    if (QV_SOON_MODE === 'show') return;
+    const cls = QV_SOON_MODE === 'hide' ? 'qv-hidden' : 'qv-soon';
+    const dead = a => (a.getAttribute('href') || '#') === '#';
+    const mark = el => el.classList.add(cls);
+
+    // cards and tiles that still link to "#"
+    document.querySelectorAll('.tool-card, .rel-card, .chart-tile, .cat-card').forEach(a => { if (dead(a)) mark(a); });
+    // hypothesis tests (list items, no links yet)
+    document.querySelectorAll('.test-item').forEach(li => {
+      const live = li.classList.contains('live') || [...li.querySelectorAll('a')].some(a => !dead(a));
+      if (!live) mark(li);
+    });
+    // buttons inside sections that go nowhere (e.g. Launch Test Advisor)
+    document.querySelectorAll('section .btn-primary').forEach(a => { if (dead(a)) mark(a); });
+
+    if (QV_SOON_MODE !== 'hide') return;
+
+    // hide sections with nothing finished, plus nav links and discipline cards pointing to them
+    const groups = { 'tools': '.tool-card', 'stat-tests': '.test-item', 'control-charts': '.chart-tile', 'reliability': '.rel-card' };
+    Object.entries(groups).forEach(([id, sel]) => {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      const items = [...sec.querySelectorAll(sel)];
+      if (items.length && items.every(i => i.classList.contains('qv-hidden'))) {
+        sec.classList.add('qv-hidden');
+        document.querySelectorAll('a[href="#' + id + '"]').forEach(a => {
+          a.classList.add('qv-hidden');
+          if (a.parentElement && a.parentElement.tagName === 'LI') a.parentElement.classList.add('qv-hidden');
+        });
+      }
+    });
+    // tidy the discipline grid when cards are removed
+    const cg = document.querySelector('.cats-grid');
+    if (cg && cg.querySelector('.qv-hidden')) cg.classList.add('qv-trim');
+    // the 60+ / 40+ counters overstate what's live while tools are hidden
+    document.querySelectorAll('.hero-stats').forEach(mark);
+    // footer links that go nowhere
+    document.querySelectorAll('footer .footer-links a').forEach(a => {
+      if (dead(a)) a.parentElement.classList.add('qv-hidden');
+    });
+  })();
+
 </script>
 </body>
 </html>
