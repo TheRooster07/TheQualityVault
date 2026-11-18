@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Chi-Square Goodness of Fit
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+d4dc8d8f5e7f9961124fa52a6f45433b1b04370aab53b6fd226d055d6f5cb6bd  Chi_Square_Goodness_of_Fit.xlsx
+27dba47f770a39339d695629c37545cbe223f573d11da536ba53b6eee3ecb925  README.md
+4481d29e73551c540df7c196817ffcd699505aab99cdea1f451cc0e17d58a25b  chi-square-goodness-of-fit-toolkit.zip
+b39009c4f79c55de3917799dd7b007d2ba8915553f96f3f698d5333823ce3536  chi_square_gof.R
+cca694e824e59a743b25d803199bde58761d4f38d2865dd7e5ab01921a0c5fea  chi_square_gof.py
+9b803f3b37ebf4966ceec420c2b496597686b426a3aee4b32fcf8a3ae4d3564f  example_data.csv

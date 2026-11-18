@@ -1,0 +1,8 @@
+# SHA-256 checksums — Quality Vault · Value Stream Mapping Template
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+fd0379d13f5d5891f93162800ba0eaf1c9ca0c29f57ce786e95768e1cbbc3df4  README.md
+02a01aeb7b160925fb6e07d9c02f6060ef90a6ca7501af705a005f0b3c155c46  Value_Stream_Map.xlsx
+474d0743873e87e7023d18b159dce17df39583b3bf70eccc15daf719d0901e10  value-stream-map-toolkit.zip

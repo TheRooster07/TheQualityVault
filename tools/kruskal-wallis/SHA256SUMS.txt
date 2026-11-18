@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Kruskal-Wallis
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+46d405ee23f4c38ffbc32835e0f83664d822714ca0aa6d327be9964ee919c6f9  Kruskal_Wallis.xlsx
+ab99e7f7c63122e93ea03feb84abbdb43cc7743b90fc41042ea7b9bc426d7d54  README.md
+7629f7aec1c4ee8efcff734bfcb0cf7f608e3c46a566ab5e188116f9178caa16  example_data.csv
+c6fe44502617e47f7663e871dbbeb2a710596c4a6dfbd8b6df4f11e19f41c6c0  kruskal-wallis-toolkit.zip
+4f09c1b280acb4561c66f4385631d76f449460bbad2a7c8ac2de655df21395de  kruskal_wallis.R
+c7ee0c9ddb975701d5fd6068a0c12b68eefbc24c36fe7a12e788e4cb7c073ba3  kruskal_wallis.py

@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · One-Way ANOVA
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+b68ddf455dbce8e29342b7f21f1d8929d0188d7ac9f36e0e894c9af57dfde57a  One_Way_ANOVA.xlsx
+db64cdfcef05ebe2d43b0ecb338a41f56bf489dd5e7fe486e1f58e2527ea86ab  README.md
+cc59fd12cc15abf60b72c325b0a99e4466e68bd2d583f5a283c2f6d96dfe76e8  example_data.csv
+1aacce70a06e6a46ee5213703312c8def527cc32b7a537b1f15f7e549fd3b7f2  one-way-anova-toolkit.zip
+4cf8c2c1fc7fcb0edc3420def4fd9009b12b9f092c1e0343b71a880af02f7339  one_way_anova.R
+74182d97a4a51b46418723c9fc981094f70aa0bf21d0c50bb0d209da3ee0de18  one_way_anova.py

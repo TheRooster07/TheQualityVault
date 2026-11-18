@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · 2-Sample t-Test
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+e692b847641f5e8f4146fa7b413c5cd8f650177b17f243b3f22833078c73b58f  2-sample-t-test-toolkit.zip
+e27302b736db0c69c852863204839d1b28ed140f9c60c78f2102bd0406719cd6  2_Sample_t_Test.xlsx
+c747ae96e10517cd71968de3bd437594d3d8b4f3ef8f0a193428191e5fbaebf5  README.md
+cd12cb1a66e34994a506ff6218e27056891ff5b86138532405e5aa594b9f27f1  example_data.csv
+aed335306e8d57548bf8a01400b904229911f59350877b45860aaf172333b6a4  two_sample_t.R
+193126bc046778918c15e83f83f664e44cfcf03c0ee191e0be6a517d0119cbce  two_sample_t.py

@@ -1,0 +1,13 @@
+# SHA-256 checksums — Quality Vault · Gauge R&R (ANOVA Method)
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+967a80a51e608f8540efd8cb725588fab6fb31d83aebc9b3cbc896db5d56e715  Gauge_RR_ANOVA.xlsx
+fbfdd3ca9d521a0713b2d69800caa4881f5d460c8ead060f080327d56a5e4b4c  README.md
+63a699c98d7a0b7c2ca0860601f537667b56ffed95d59138fd8bde6fede38a05  example_data.csv
+0c5497b22d9c852feb8c8448929fa49d8c5fe5280bcc22026990adb163597fc5  gauge-rr-toolkit.zip
+9b63f835480ea09df40893c6f7e45a77ade5eeddaadae9db6692f4813c68ab3d  gauge_rr.R
+a207459a9cd72f713aaf51aba799d854ee47998e875589fcbd30e49544abfab7  gauge_rr.py
+d69e7bd0071268c6e8fbd7a4f3c715f59ab2d3527eaea8c9b19e3be4d0fd8ba1  gauge_rr_example_R.png
+52219c7883307cafde03511d75c69ef7554f7c83bfa7a4045b2b136a46076ea7  gauge_rr_example_python.png

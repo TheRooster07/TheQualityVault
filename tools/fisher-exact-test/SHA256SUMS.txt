@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Fisher's Exact Test
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+c341f4ea292af002507edb10fe27ab62a715f0641fbc40fe541d4aa309494909  Fisher_Exact_Test.xlsx
+7b5e3e2826c5452dbc8ba809ec21a20c4919618c52e3826f6ec251cb6c204756  README.md
+823eca4392a659750b6daeddbb5b15a6a29e41bed40a8556f01ff93b58efa1bf  example_data.csv
+d2af14b552c8e9b2064dfba06a7dd3a196d8ee3de4864a5a36e9d7c100a20ea6  fisher-exact-test-toolkit.zip
+35569529ac29b23a50a1796be494d915aa129149978facffa11ad36d80f8c881  fisher_exact.R
+d1d399a6a70a2c9f5c41533b5c2de1b9e8855c7d3cd470749613c3f21ced13f9  fisher_exact.py

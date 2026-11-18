@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Mood's Median Test
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+71cb2565755ec3674bd37bd3d189db9174c2941acfb70afbbf1e996f6d45dceb  Moods_Median_Test.xlsx
+a882483a8c813b6311021ed88f68b25d6c0bbc910484e4e519391b7997a128c4  README.md
+b2765a366a6beec92e84ae34029cc63d0aa2f1dc74d3ab619cf8cb071d9f3791  example_data.csv
+8a0ae8018f9bccb607b796918c942afc29b30090549830ce2c04163ca76f7642  moods-median-test-toolkit.zip
+efcf09531faacd57c065e973b9c5975a15d50d03f79df47b4f6912d065dcd8b5  moods_median.R
+e4cc787b60a0a3aca6585eda57b93d14275d2bf7af4eae4ff17efd4f50095f9e  moods_median.py

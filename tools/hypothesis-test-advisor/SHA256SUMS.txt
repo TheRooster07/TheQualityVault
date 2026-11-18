@@ -1,0 +1,10 @@
+# SHA-256 checksums — Quality Vault · Hypothesis Test Advisor
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+c46ee3423d95851eda68c3ad86984cd7b806e94212839e815af082094c29ea7b  Hypothesis_Test_Advisor.xlsx
+333f30c23e706f258c928947320421c7b2a545bbec27c274a699af3a3e766709  README.md
+c21b1e56a7a682d1bf99aae43b64f7c94fd395ad8af3ba2e1597f8f7fc5b3331  hypothesis-test-advisor-toolkit.zip
+c1f2057e12db5f208d8e1648b85dae5fba10ac4fc457eb18f47e71cdbc581632  hypothesis_advisor.R
+04e910dc8df9f481979cc85e6a0ff28d21261f9aed3059eafbda78a9578667a0  hypothesis_advisor.py

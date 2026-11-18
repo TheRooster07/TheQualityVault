@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Chi-Square Test of Association
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+b77a846e71c63065125c53838e33b1dc0acff852e19bc1d22a920ba9d914f590  Chi_Square_Association.xlsx
+0c509e408fe19246fc653ab99378fb755feb90fdce850201f32d87a631660147  README.md
+1354c4d7556687e58161f3472fcbb28e49cccb0a3e54809ea7776f8a15f5dc2e  chi-square-association-toolkit.zip
+1bae4064f86c7fbebb220dc89133242bdc4624021f02a7b8d20d1d2a0db41662  chi_square_association.R
+67f4c063f96b28230e4c919543039e61ccda46b1cdaadfd54c21411a50148c29  chi_square_association.py
+cdafef8d093b1d03ceb824c525494ddb95f624b2e95a8b4292714badc87d5bc2  example_data.csv

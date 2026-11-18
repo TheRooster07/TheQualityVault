@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Bartlett's Test
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+f43bce3fd7e52b15ddfee6b8b150820bba0205a7a4a02369bcf70224248325fd  Bartlett_Test.xlsx
+c13af3b861ea3e06b59ec3658c02f9ba4c6f2cae49711deb3ae0d7268ff9ce46  README.md
+749473d951b9453aa2fc91c28eb298eed24a46dee8554701c9dca5323677e24a  bartlett-test-toolkit.zip
+a32ebfbb1ef5a962619673f9d9f74a3d1b90acc26b46d9b1fd0adecb583ce8ae  bartlett_test.R
+930a4b128c099e51c0a1d7ba7d9aceffbd8ba606a027e1bfeecab3939a0f81d2  bartlett_test.py
+9dcac26654b2a17b69f46e319cb2fc37bc8db1e1266d08394e4944383d7c266e  example_data.csv

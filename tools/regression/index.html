@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regression — Quality Vault</title>
+<meta name="description" content="Ordinary least-squares regression of one response on 1–5 predictors: coefficients, standard errors, t and p-values, R², adjusted R², standard error of the ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/qv-tool.css">
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/"><div class="logo-mark">QV</div><div class="logo-text">Quality<span>Vault</span></div></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/tools/">All Tools</a></li>
+    <li><a href="/tools/#stats">Statistics</a></li>
+    <li><a href="/tools/hypothesis-test-advisor/">Test Advisor</a></li>
+  </ul>
+</nav>
+<header class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <a href="/tools/#stats">Statistical Analysis</a> / Regression</div>
+    <div class="section-label">// Statistical Analysis · Regression</div>
+    <h1>Regression</h1>
+    <p class="lead">Ordinary least-squares regression of one response on 1–5 predictors: coefficients, standard errors, t and p-values, R², adjusted R², standard error of the regression and the model F-test.</p>
+    <div class="meta-row"><span class="pill ok">Excel</span><span class="pill ok">Python</span><span class="pill ok">R</span><span class="pill">No macros</span><span class="pill">Worked example</span></div>
+    <div class="btn-row">
+      <a class="btn primary" href="#downloads">Get the files</a>
+      <button type="button" class="btn" data-file="regression-toolkit.zip">👁 Preview &amp; download toolkit</button>
+    </div>
+  </div>
+</header>
+
+<section id="workbook"><div class="wrap">
+  <div class="section-label">// Inside the workbook</div>
+  <h2>5 tabs, ready on day one</h2>
+  <p class="lead">Start on the Example tab to see a finished analysis, then switch to Blank Template for your own data.</p>
+  <div class="sheets"><div class="sheet"><b>How to Use</b><span>Step-by-step instructions, definitions and the colour key for input cells</span></div><div class="sheet"><b>Example</b><span>A completed worked example, so you can see what good input and output look like</span></div><div class="sheet"><b>Blank Template</b><span>The same layout, empty — paste or type your own data here</span></div><div class="sheet"><b>Python Code</b><span>The full Python script, readable inside the workbook</span></div><div class="sheet"><b>R Code</b><span>The full R script, readable inside the workbook</span></div></div>
+</div></section>
+
+<section id="downloads"><div class="wrap">
+  <div class="section-label">// Download. Open. Analyze.</div>
+  <h2>Run it on your own data</h2>
+  <p class="lead">The Excel, Python and R versions give the same results on the worked example.</p>
+  <div class="dl-grid auto"><button type="button" class="dl" data-file="Regression.xlsx"><span class="tag t-xlsx">Excel</span><h3>Excel workbook</h3><p>5 tabs: How to Use, Example, Blank Template, Python Code, R Code. Formulas only, no macros.</p><div class="fn"><span>👁 Preview</span><span>.xlsx</span></div></button><button type="button" class="dl" data-file="regression.py"><span class="tag t-py">Python</span><h3>regression.py</h3><p>Python version — same results as the workbook.</p><div class="fn"><span>👁 Preview</span><span>.py</span></div></button><button type="button" class="dl" data-file="regression.R"><span class="tag t-r">R</span><h3>regression.R</h3><p>R version — runs in RStudio or Rscript.</p><div class="fn"><span>👁 Preview</span><span>.R</span></div></button><button type="button" class="dl" data-file="example_data.csv"><span class="tag t-csv">CSV</span><h3>example_data.csv</h3><p>The worked-example data, ready to load.</p><div class="fn"><span>👁 Preview</span><span>.csv</span></div></button><button type="button" class="dl" data-file="regression-toolkit.zip"><span class="tag t-zip">ZIP</span><h3>Full toolkit</h3><p>All 5 files, including the README.</p><div class="fn"><span>👁 Preview</span><span>.zip</span></div></button></div>
+  <div class="safe">
+    <div><b>Preview before you download</b><span>Every file opens in a viewer first, so you can read the code or see what's inside before anything touches your computer.</span></div>
+    <div><b>Plain text and formulas only</b><span>The .py and .R files are readable source code. The workbook is .xlsx, a format that cannot contain macros.</span></div>
+    <div><b>Check the fingerprint</b><span>Each preview shows the file's SHA-256 checksum, also listed in <a href="SHA256SUMS.txt" target="_blank" rel="noopener">SHA256SUMS.txt</a> and matched by the public source on GitHub.</span></div>
+  </div>
+</div></section>
+<section id="run"><div class="wrap">
+    <div class="section-label">// Run it</div><h2>Command line</h2>
+    <p class="lead">Python needs the packages named on its download card; R uses base R. Both run the worked example with <code>demo</code> and accept your own CSV.</p>
+    <div class="md"><pre><code>python regression.py demo
+python regression.py --csv my_data.csv --cols Y X1 X2 X3
+Rscript regression.R
+</code></pre></div></div></section>
+<section id="example"><div class="wrap">
+  <div class="section-label">// Worked example &amp; method</div>
+  <h2>What you'll get</h2>
+  <div class="md"><h3>Example output (Excel, Python and R agree)</h3>
+<pre><code>Intercept      coef     9.250862  SE   5.428694  t    1.704  p 0.1031
+Temp           coef     0.181875  SE   0.025763  t    7.060  p 0.0000
+Pressure       coef     3.001068  SE   0.297975  t   10.072  p 0.0000
+Humidity       coef     0.082208  SE   0.066891  t    1.229  p 0.2327
+Linear Regression (simple and multiple)  —  TheQualityVault.com
+n                                             25
+Predictors k                                   3
+R-sq                                    0.929994
+R-sq (adj)                              0.919994
+S                                        1.50161
+F                                         92.992
+P-value (model)                      2.73925e-12
+Coef X1                                 0.181875
+P X1                                 5.75295e-07
+Model p = 0.0000 &lt; 0.05 → the model explains a significant part of the variation (R² = 93.0%).
+</code></pre></div>
+  
+</div></section>
+<section><div class="wrap"><div class="section-label">// Related</div><h2>More Statistical Analysis tools</h2><div class="related"><a class="rcard" href="/tools/hypothesis-test-advisor/"><b>Hypothesis Test Advisor</b><span>Start here</span></a><a class="rcard" href="/tools/1-sample-t-test/"><b>1-Sample t-Test</b><span>Parametric</span></a><a class="rcard" href="/tools/2-sample-t-test/"><b>2-Sample t-Test</b><span>Parametric</span></a><a class="rcard" href="/tools/paired-t-test/"><b>Paired t-Test</b><span>Parametric</span></a><a class="rcard" href="/tools/one-way-anova/"><b>One-Way ANOVA</b><span>Parametric</span></a><a class="rcard" href="/tools/two-way-anova/"><b>Two-Way ANOVA</b><span>Parametric</span></a></div><p class="hint" style="margin-top:1.5rem"><a href="/tools/">Browse the full tool library →</a></p></div></section>
+
+<div class="qv-modal" id="qv-modal" role="dialog" aria-modal="true" aria-labelledby="qv-title">
+  <div class="qv-box">
+    <div class="qv-head">
+      <div><h3 id="qv-title">file</h3><div class="qv-meta" id="qv-meta"></div></div>
+      <button type="button" class="qv-x" id="qv-close" aria-label="Close preview">✕</button>
+    </div>
+    <div class="qv-body" id="qv-body"></div>
+    <div class="qv-hash"><span>SHA-256</span><code id="qv-sha">calculating…</code></div>
+    <div class="qv-foot">
+      <span class="note" id="qv-note"></span>
+      <a class="btn" id="qv-gh" target="_blank" rel="noopener">View on GitHub ↗</a>
+      <button type="button" class="btn" id="qv-copy">Copy code</button>
+      <a class="btn primary" id="qv-dl" download>⬇ Download</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">© 2025 Quality Vault. All tools provided for professional use. · <a href="/tools/">All tools</a> · <a href="/">Home</a></div>
+</footer>
+<script>window.QV = {"gh": "https://github.com/TheRooster07/TheQualityVault/blob/main/tools/regression/", "files": {"README.md": {"kind": "code", "label": "Read-me", "lang": "md"}, "Regression.xlsx": {"kind": "xlsx", "label": "Excel workbook (.xlsx — no macros)"}, "example_data.csv": {"kind": "csv", "label": "Comma-separated data"}, "regression.R": {"kind": "code", "label": "R source", "lang": "r"}, "regression.py": {"kind": "code", "label": "Python source", "lang": "py"}, "regression-toolkit.zip": {"kind": "zip", "label": "Zip archive"}}, "zip": [["README.md", "2 KB"], ["Regression.xlsx", "24 KB"], ["example_data.csv", "1 KB"], ["regression.R", "2 KB"], ["regression.py", "3 KB"]], "sheets": [["How to Use", "Step-by-step instructions, definitions and the colour key for input cells"], ["Example", "A completed worked example, so you can see what good input and output look like"], ["Blank Template", "The same layout, empty — paste or type your own data here"], ["Python Code", "The full Python script, readable inside the workbook"], ["R Code", "The full R script, readable inside the workbook"]]};</script>
+<script src="/assets/qv-viewer.js"></script>
+</body>
+</html>

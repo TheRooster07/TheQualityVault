@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Mann-Whitney U
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+49094c10126aa040d4d285d8ca7f0dd7e1523cbd387c71d1e25ebec7259de135  Mann_Whitney_U.xlsx
+44b4cae5aacab819676495ffab99ee44e3128b18af75c139cdd29da572f879c8  README.md
+4f934e7bb935cd018e4b59b95fd834f5cdb0143957b2d44c25462bead44c5b2b  example_data.csv
+732302f26219d006821aba2ffc79c92b2d6fe74336fc8bab9dd52b0875a24ef5  mann-whitney-u-toolkit.zip
+371668041c225ec3661424c00fe661f2379a18592422b4b0fe4e3282b81fa90b  mann_whitney.R
+7f3efdcc09f850969e538170886ed5bb8251c852060a1c8494f61f4aebe423d4  mann_whitney.py

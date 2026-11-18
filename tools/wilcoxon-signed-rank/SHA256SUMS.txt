@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Wilcoxon Signed Rank
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+74e9155eb1e93beb241312e7150c3b6e37d404615613c7bcb9ff5bca96dcf3df  README.md
+8bea67ab0ed102df0cfb927d0f0bc2c43e27a1a0a63e198f59703e89c9c723b6  Wilcoxon_Signed_Rank.xlsx
+382bd47a2a1f56cc482a70d1f7ef9b024d760b5b28174bad6ccced8372e1bd85  example_data.csv
+b070233eb230e28ca4249480478cd467ea4170122551eb8916c54f8dd4ca663f  wilcoxon-signed-rank-toolkit.zip
+57e01dbeb108afe3bc8f1310281535da759d03a1333c4c1463fbd0a500861b85  wilcoxon_signed_rank.R
+db547714888208aa4244d269d6904516d929bf72bb098b36a524a326fd496c3e  wilcoxon_signed_rank.py

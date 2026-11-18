@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Regression
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+c1b06bb9de1f398de70c564f46b69862a71c00ca02f4fcfd376a8b1bfa79625b  README.md
+e1f58eb5bce2accae733fba702ea01a71ddf03b55af189685078e308c95fb9fc  Regression.xlsx
+341b57b08c9e170c26db819f516052804e8d6826f40cd233798691acada66cb3  example_data.csv
+1d73d6c34d12e2d7e54b27bdf99752c067005a4b491f3b93364e1781095d2876  regression-toolkit.zip
+4043b3dc98db4f3eb9860acbbcb86c3c0d0bc0fa96d2621d6775e372841b1643  regression.R
+bad07ffd96035fcfac3e3a49f07ac8aaf4029edd1ec07d6665fcd8ba07793638  regression.py

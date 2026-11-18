@@ -1,0 +1,13 @@
+# SHA-256 checksums — Quality Vault · DOE Full Factorial Designer
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+31545739051f854b1d16f241a9f0e4c406b041cfa28f8e0d2abfc64ae863fa0b  DOE_Full_Factorial_Designer.xlsx
+69f64b06c6f615e6543afea6646984861fe6d8069cb38df52fce21f8f7c9e632  README.md
+24861972a2e88bec64368ea38a89c9dca2554575068d5e9a6555f4668a787dfd  doe-full-factorial-toolkit.zip
+1c41d575673aee70b2691a8ef3f3913a635c682470cdb0859cb28498cf7d590a  doe_example_R.png
+ad021cc600c35d6db92d1b9fd090468dd47f8b3510a60d71bdd505426454eccb  doe_example_python.png
+9da1532e6a544c71c2331a807209c140e8247eade49f4626a31253e7e050b097  doe_factorial.R
+ac415dde2d98c0d36a866b1f046ac42f651eb85e3cfdc119bb35a7234f0e74fe  doe_factorial.py
+90d8199ea249eea70ef6f3fb93e8c87c0164c06d3d0c0c782202aa8ac04053db  example_data.csv

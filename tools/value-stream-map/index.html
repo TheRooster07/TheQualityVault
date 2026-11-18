@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Stream Mapping Template — Quality Vault</title>
+<meta name="description" content="Record up to 12 process steps with cycle time, changeover, uptime, operators and inventory. Calculates takt time, bottleneck, inventory days, production le">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/qv-tool.css">
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/"><div class="logo-mark">QV</div><div class="logo-text">Quality<span>Vault</span></div></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/tools/">All Tools</a></li>
+    <li><a href="/tools/#stats">Statistics</a></li>
+    <li><a href="/tools/hypothesis-test-advisor/">Test Advisor</a></li>
+  </ul>
+</nav>
+<header class="hero">
+  <div class="wrap">
+    <div class="crumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <a href="/tools/#lean">Lean</a> / Value Stream Mapping Template</div>
+    <div class="section-label">// Lean</div>
+    <h1>Value Stream Mapping Template</h1>
+    <p class="lead">Record up to 12 process steps with cycle time, changeover, uptime, operators and inventory. Calculates takt time, bottleneck, inventory days, production lead time, value-added time and process cycle efficiency (PCE), draws the map with a timeline ladder, and plots line balance vs takt.</p>
+    <div class="meta-row"><span class="pill ok">Excel</span><span class="pill">No macros</span><span class="pill">Worked example</span></div>
+    <div class="btn-row">
+      <a class="btn primary" href="#downloads">Get the files</a>
+      <button type="button" class="btn" data-file="value-stream-map-toolkit.zip">👁 Preview &amp; download toolkit</button>
+    </div>
+  </div>
+</header>
+
+<section id="workbook"><div class="wrap">
+  <div class="section-label">// Inside the workbook</div>
+  <h2>3 tabs, ready on day one</h2>
+  <p class="lead">Start on the Example tab to see a finished analysis, then switch to Blank Template for your own data.</p>
+  <div class="sheets"><div class="sheet"><b>How to Use</b><span>Step-by-step instructions, definitions and the colour key for input cells</span></div><div class="sheet"><b>Example</b><span>A completed worked example, so you can see what good input and output look like</span></div><div class="sheet"><b>Blank Template</b><span>The same layout, empty — paste or type your own data here</span></div></div>
+</div></section>
+
+<section id="downloads"><div class="wrap">
+  <div class="section-label">// Download. Open. Analyze.</div>
+  <h2>Run it on your own data</h2>
+  <p class="lead">A structured Excel worksheet — no code needed for this tool.</p>
+  <div class="dl-grid auto"><button type="button" class="dl" data-file="Value_Stream_Map.xlsx"><span class="tag t-xlsx">Excel</span><h3>Excel workbook</h3><p>3 tabs: How to Use, Example, Blank Template. Formulas only, no macros.</p><div class="fn"><span>👁 Preview</span><span>.xlsx</span></div></button><button type="button" class="dl" data-file="value-stream-map-toolkit.zip"><span class="tag t-zip">ZIP</span><h3>Full toolkit</h3><p>All 2 files, including the README.</p><div class="fn"><span>👁 Preview</span><span>.zip</span></div></button></div>
+  <div class="safe">
+    <div><b>Preview before you download</b><span>Every file opens in a viewer first, so you can read the code or see what's inside before anything touches your computer.</span></div>
+    <div><b>Plain text and formulas only</b><span>The .py and .R files are readable source code. The workbook is .xlsx, a format that cannot contain macros.</span></div>
+    <div><b>Check the fingerprint</b><span>Each preview shows the file's SHA-256 checksum, also listed in <a href="SHA256SUMS.txt" target="_blank" rel="noopener">SHA256SUMS.txt</a> and matched by the public source on GitHub.</span></div>
+  </div>
+</div></section>
+
+<section id="example"><div class="wrap">
+  <div class="section-label">// Worked example &amp; method</div>
+  <h2>What you'll get</h2>
+  <div class="md"><h3>Example</h3>
+<p>Demand 920/day, 2 × 27,600 s → takt 60 s. CNC drill (61.2 s effective) is over takt.
+Lead time 9.6 days vs 223 s of value-added time → PCE 0.04 %.</p>
+<p>In the chart-helper columns (O–Q), N/A values are deliberate — they keep unused steps off the takt line.</p></div>
+  
+</div></section>
+
+
+<div class="qv-modal" id="qv-modal" role="dialog" aria-modal="true" aria-labelledby="qv-title">
+  <div class="qv-box">
+    <div class="qv-head">
+      <div><h3 id="qv-title">file</h3><div class="qv-meta" id="qv-meta"></div></div>
+      <button type="button" class="qv-x" id="qv-close" aria-label="Close preview">✕</button>
+    </div>
+    <div class="qv-body" id="qv-body"></div>
+    <div class="qv-hash"><span>SHA-256</span><code id="qv-sha">calculating…</code></div>
+    <div class="qv-foot">
+      <span class="note" id="qv-note"></span>
+      <a class="btn" id="qv-gh" target="_blank" rel="noopener">View on GitHub ↗</a>
+      <button type="button" class="btn" id="qv-copy">Copy code</button>
+      <a class="btn primary" id="qv-dl" download>⬇ Download</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">© 2025 Quality Vault. All tools provided for professional use. · <a href="/tools/">All tools</a> · <a href="/">Home</a></div>
+</footer>
+<script>window.QV = {"gh": "https://github.com/TheRooster07/TheQualityVault/blob/main/tools/value-stream-map/", "files": {"README.md": {"kind": "code", "label": "Read-me", "lang": "md"}, "Value_Stream_Map.xlsx": {"kind": "xlsx", "label": "Excel workbook (.xlsx — no macros)"}, "value-stream-map-toolkit.zip": {"kind": "zip", "label": "Zip archive"}}, "zip": [["README.md", "1 KB"], ["Value_Stream_Map.xlsx", "21 KB"]], "sheets": [["How to Use", "Step-by-step instructions, definitions and the colour key for input cells"], ["Example", "A completed worked example, so you can see what good input and output look like"], ["Blank Template", "The same layout, empty — paste or type your own data here"]]};</script>
+<script src="/assets/qv-viewer.js"></script>
+</body>
+</html>

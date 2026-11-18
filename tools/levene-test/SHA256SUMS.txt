@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Levene's Test
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+4e7611334ac5c254f0b4c932a215a18e1fad390b2924f979eb287c90f0270a4c  Levene_Test.xlsx
+fb5dca88da5fe3160c624d122aaada91c3a984e8ec52b121cc06d4f399fc0e6f  README.md
+9dcac26654b2a17b69f46e319cb2fc37bc8db1e1266d08394e4944383d7c266e  example_data.csv
+f0a557279f2eb2aaab99cb193096b139290cfa557cd7528ac12f34daf066f712  levene-test-toolkit.zip
+95f28609de2d48354f10538d8657c5166030e59437797e4b25374034725c1f45  levene_test.R
+43c5321158a7963afc693b4217287482bbf3997cdfdc611cf51e3889cb51cb11  levene_test.py

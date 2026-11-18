@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · Paired t-Test
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+a7e377db5972aedad32f75bb97ae7fa091760d944fd6b14525e14973ef844d5c  Paired_t_Test.xlsx
+29de7ee20a2d00699440551f97ae42cc8cd683d16aef1895eaaca422fae8fa70  README.md
+78e3ba9fdfd88d1f7a64dde5d89ead9935bd94cd0286b89a30ae89d188d0773c  example_data.csv
+a80b74dc4ec76079605ba3f46569320ce54b42c80b2da7724a6baf9b8ccf65f7  paired-t-test-toolkit.zip
+926973219203472417ce4c2f16b8ae397b64ca6b12ffb014e3c58b791a7d21d2  paired_t.R
+a06b164e885813d73c0f08baa553435d12cdc585344ca99ba2e2ee68cadb0209  paired_t.py

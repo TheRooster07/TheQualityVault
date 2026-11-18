@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Library — Quality Vault</title>
+<meta name="description" content="24 free quality engineering tools: Excel workbooks with Python and R code for Six Sigma, MSA, DOE, reliability and hypothesis testing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/qv-tool.css">
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/"><div class="logo-mark">QV</div><div class="logo-text">Quality<span>Vault</span></div></a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/tools/" class="on">All Tools</a></li>
+    <li><a href="/tools/#stats">Statistics</a></li>
+    <li><a href="/tools/hypothesis-test-advisor/">Test Advisor</a></li>
+  </ul>
+</nav>
+<header class="hero" style="padding-bottom:1rem">
+  <div class="wrap">
+    <div class="crumb"><a href="/">Home</a> / Tools</div>
+    <div class="section-label">// The vault</div>
+    <h1>Tool <em>library</em></h1>
+    <p class="lead">24 tools and counting. Every one has a worked example, an Excel workbook with formulas only, and Python and R versions where the method is statistical. Preview any file before you download it.</p>
+    <div class="lib-bar"><input id="q" type="search" placeholder="Search tools — e.g. variance, paired, Cpk" aria-label="Search tools"><button class="chip on" data-c="all">All</button><button class="chip" data-c="stats">Statistical Analysis</button><button class="chip" data-c="six-sigma">Six Sigma</button><button class="chip" data-c="msa">Measurement Systems</button><button class="chip" data-c="dfss">DMADV / DFSS</button><button class="chip" data-c="reliability">Reliability Engineering</button><button class="chip" data-c="lean">Lean</button></div>
+  </div>
+</header>
+<div class="wrap"><div class="lib-group" id="stats" data-g="stats"><div class="section-label">// 17 tools</div>
+      <h2>Statistical Analysis</h2><p class="lead">Parametric and non-parametric hypothesis tests, variance tests and regression.</p><div class="lib-grid"><a class="tcard" href="/tools/hypothesis-test-advisor/" data-q="hypothesis test advisor answer up to 8 questions and get the right statistical test (26 covered), its null hypothesis, assumptions, and the exact excel, python and r call. the python and r scripts can also run the test. start here">
+        <span class="sub">Start here</span><h3>Hypothesis Test Advisor</h3><p>Answer up to 8 questions and get the right statistical test (26 covered), its null hypothesis, assumptions, and the exact Excel, Python and R call. The Python and R scripts can also run the test.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/1-sample-t-test/" data-q="1-sample t-test tests whether the mean of one sample differs from a target value mu0. t = (x̄ − mu0) / (s/√n), df = n − 1. reports t, p-value and a confidence interval for the mean. parametric">
+        <span class="sub">Parametric</span><h3>1-Sample t-Test</h3><p>Tests whether the mean of one sample differs from a target value mu0. t = (x̄ − mu0) / (s/√n), df = n − 1. Reports t, p-value and a confidence interval for the mean.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/2-sample-t-test/" data-q="2-sample t-test compares the means of two independent samples. reports both the pooled (equal variances) and the welch (unequal variances) t-test with confidence intervals for the difference. parametric">
+        <span class="sub">Parametric</span><h3>2-Sample t-Test</h3><p>Compares the means of two independent samples. Reports both the pooled (equal variances) and the Welch (unequal variances) t-test with confidence intervals for the difference.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/paired-t-test/" data-q="paired t-test tests whether the mean of paired differences (first − second) differs from a hypothesised difference (usually 0). each row is one unit measured twice. parametric">
+        <span class="sub">Parametric</span><h3>Paired t-Test</h3><p>Tests whether the mean of paired differences (first − second) differs from a hypothesised difference (usually 0). Each row is one unit measured twice.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/one-way-anova/" data-q="one-way anova tests whether the means of k groups are all equal (one factor). reports the anova table, r², pooled standard deviation and group confidence intervals. python/r also print tukey comparisons. parametric">
+        <span class="sub">Parametric</span><h3>One-Way ANOVA</h3><p>Tests whether the means of k groups are all equal (one factor). Reports the ANOVA table, R², pooled standard deviation and group confidence intervals. Python/R also print Tukey comparisons.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/two-way-anova/" data-q="two-way anova balanced two-factor anova with interaction: tests factor a, factor b and a × b. input is a long table: one row per observation with the a level, b level and response. parametric">
+        <span class="sub">Parametric</span><h3>Two-Way ANOVA</h3><p>Balanced two-factor ANOVA with interaction: tests factor A, factor B and A × B. Input is a long table: one row per observation with the A level, B level and response.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/mann-whitney-u/" data-q="mann-whitney u rank-based test that two independent samples come from the same distribution (often read as &#x27;equal medians&#x27;). normal approximation with tie correction and continuity correction. non-parametric">
+        <span class="sub">Non-parametric</span><h3>Mann-Whitney U</h3><p>Rank-based test that two independent samples come from the same distribution (often read as &#x27;equal medians&#x27;). Normal approximation with tie correction and continuity correction.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/wilcoxon-signed-rank/" data-q="wilcoxon signed rank tests whether the median of paired differences is zero (two columns) or whether one sample&#x27;s median equals a target (one column). zero differences are dropped; normal approximation with tie and continuity corrections. non-parametric">
+        <span class="sub">Non-parametric</span><h3>Wilcoxon Signed Rank</h3><p>Tests whether the median of paired differences is zero (two columns) or whether one sample&#x27;s median equals a target (one column). Zero differences are dropped; normal approximation with tie and continuity corrections.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/kruskal-wallis/" data-q="kruskal-wallis rank-based test that k independent samples come from the same distribution (non-parametric one-way anova). h statistic with tie correction, chi-square p-value. non-parametric">
+        <span class="sub">Non-parametric</span><h3>Kruskal-Wallis</h3><p>Rank-based test that k independent samples come from the same distribution (non-parametric one-way ANOVA). H statistic with tie correction, chi-square p-value.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/moods-median-test/" data-q="mood&#x27;s median test counts how many values in each group lie above / at-or-below the grand median and runs a chi-square test on that table. very robust to outliers. non-parametric">
+        <span class="sub">Non-parametric</span><h3>Mood&#x27;s Median Test</h3><p>Counts how many values in each group lie above / at-or-below the grand median and runs a chi-square test on that table. Very robust to outliers.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/chi-square-goodness-of-fit/" data-q="chi-square goodness of fit tests whether observed counts in k categories match expected proportions (e.g. equal, or a historical mix). reports chi-square, p-value and each category&#x27;s contribution. counts &amp; categories">
+        <span class="sub">Counts &amp; categories</span><h3>Chi-Square Goodness of Fit</h3><p>Tests whether observed counts in k categories match expected proportions (e.g. equal, or a historical mix). Reports chi-square, p-value and each category&#x27;s contribution.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/chi-square-association/" data-q="chi-square test of association tests independence in an r × c table of counts (e.g. defect type × shift). reports chi-square, p-value, expected counts and how many cells have expected counts below 5. counts &amp; categories">
+        <span class="sub">Counts &amp; categories</span><h3>Chi-Square Test of Association</h3><p>Tests independence in an r × c table of counts (e.g. defect type × shift). Reports chi-square, p-value, expected counts and how many cells have expected counts below 5.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/fisher-exact-test/" data-q="fisher&#x27;s exact test exact test of association for a 2 × 2 table of counts. use it instead of the chi-square test when counts are small (any expected count below 5). reports two-sided and one-sided p-values and the odds ratio. counts &amp; categories">
+        <span class="sub">Counts &amp; categories</span><h3>Fisher&#x27;s Exact Test</h3><p>Exact test of association for a 2 × 2 table of counts. Use it instead of the chi-square test when counts are small (any expected count below 5). Reports two-sided and one-sided p-values and the odds ratio.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/levene-test/" data-q="levene&#x27;s test tests whether 2 or more groups have equal variances. brown-forsythe version: one-way anova on the absolute deviations from each group&#x27;s median – robust to non-normal data. equal variances">
+        <span class="sub">Equal variances</span><h3>Levene&#x27;s Test</h3><p>Tests whether 2 or more groups have equal variances. Brown-Forsythe version: one-way ANOVA on the absolute deviations from each group&#x27;s median – robust to non-normal data.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/bartlett-test/" data-q="bartlett&#x27;s test tests whether k normal populations have equal variances (more powerful than levene when data are normal, but sensitive to non-normality). equal variances">
+        <span class="sub">Equal variances</span><h3>Bartlett&#x27;s Test</h3><p>Tests whether k normal populations have equal variances (more powerful than Levene when data are normal, but sensitive to non-normality).</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/f-test-equal-variances/" data-q="f-test for equal variances tests whether two normal populations have the same variance. f = s1² / s2². two-sided p-value and a confidence interval for the variance ratio. equal variances">
+        <span class="sub">Equal variances</span><h3>F-Test for Equal Variances</h3><p>Tests whether two normal populations have the same variance. F = s1² / s2². Two-sided p-value and a confidence interval for the variance ratio.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/regression/" data-q="regression ordinary least-squares regression of one response on 1–5 predictors: coefficients, standard errors, t and p-values, r², adjusted r², standard error of the regression and the model f-test. regression">
+        <span class="sub">Regression</span><h3>Regression</h3><p>Ordinary least-squares regression of one response on 1–5 predictors: coefficients, standard errors, t and p-values, R², adjusted R², standard error of the regression and the model F-test.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a></div></div><div class="lib-group" id="six-sigma" data-g="six-sigma"><div class="section-label">// 2 tools</div>
+      <h2>Six Sigma</h2><p class="lead">DMAIC tools for measuring, analysing and controlling a process.</p><div class="lib-grid"><a class="tcard" href="/tools/process-capability/" data-q="process capability calculator cp, cpk, pp, ppk, cpm, expected and observed ppm, z.bench and an anderson-darling normality check — in excel, python and r. all three give identical results. ">
+        <h3>Process Capability Calculator</h3><p>Cp, Cpk, Pp, Ppk, Cpm, expected and observed PPM, Z.bench and an Anderson-Darling normality check — in Excel, Python and R. All three give identical results.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/tools/fmea/" data-q="fmea workbook process or design fmea worksheet: rpn (s × o × d), adjustable priority flag, before/after action tracking, summary counts and an automatic rpn pareto of the top 10 failure modes. ">
+        <h3>FMEA Workbook</h3><p>Process or Design FMEA worksheet: RPN (S × O × D), adjustable priority flag, before/after action tracking, summary counts and an automatic RPN Pareto of the top 10 failure modes.</p>
+        <div class="fmts"><span>XLSX</span></div></a></div></div><div class="lib-group" id="msa" data-g="msa"><div class="section-label">// 1 tool</div>
+      <h2>Measurement Systems</h2><p class="lead">Know your gauge before you trust your data.</p><div class="lib-grid"><a class="tcard" href="/tools/gauge-rr/" data-q="gauge r&amp;r (anova method) crossed gauge r&amp;r study analysed by two-way anova (aiag msa): variance components, %contribution, %study variation, %tolerance and number of distinct categories (ndc). excel, python and r give identical results. ">
+        <h3>Gauge R&amp;R (ANOVA Method)</h3><p>Crossed Gauge R&amp;R study analysed by two-way ANOVA (AIAG MSA): variance components, %Contribution, %Study Variation, %Tolerance and number of distinct categories (ndc). Excel, Python and R give identical results.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a></div></div><div class="lib-group" id="dfss" data-g="dfss"><div class="section-label">// 2 tools</div>
+      <h2>DMADV / DFSS</h2><p class="lead">Design quality in: experiments, robust design and the cost of variation.</p><div class="lib-grid"><a class="tcard" href="/tools/doe-full-factorial/" data-q="doe full factorial designer plan and analyse 2^k full factorial experiments (2–5 factors, 1–3 replicates): design matrix in standard order, randomised run order, effects, coefficients, anova (main effects + two-factor interactions), r² and a pareto of effects. excel, python and r give identical results. ">
+        <h3>DOE Full Factorial Designer</h3><p>Plan and analyse 2^k full factorial experiments (2–5 factors, 1–3 replicates): design matrix in standard order, randomised run order, effects, coefficients, ANOVA (main effects + two-factor interactions), R² and a Pareto of effects. Excel, Python and R give identical results.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a><a class="tcard" href="/taguchi-loss/" data-q="taguchi loss function put a dollar value on variation. nominal, larger and smaller-is-better loss for single parts or batches, with a live calculator. ">
+        <h3>Taguchi Loss Function</h3><p>Put a dollar value on variation. Nominal, Larger and Smaller-is-Better loss for single parts or batches, with a live calculator.</p>
+        <div class="fmts"><span>APP</span><span>XLSX</span><span>PY</span><span>R</span></div></a></div></div><div class="lib-group" id="reliability" data-g="reliability"><div class="section-label">// 1 tool</div>
+      <h2>Reliability Engineering</h2><p class="lead">Life data analysis and failure prediction.</p><div class="lib-grid"><a class="tcard" href="/tools/weibull-analysis/" data-q="weibull analysis 2-parameter weibull fit with suspensions (units still running): shape β, characteristic life η, b1/b10/b50 life, mttf and reliability at a chosen time — by median rank regression (mrr) and maximum likelihood (mle). excel, python and r give identical results. ">
+        <h3>Weibull Analysis</h3><p>2-parameter Weibull fit with suspensions (units still running): shape β, characteristic life η, B1/B10/B50 life, MTTF and reliability at a chosen time — by median rank regression (MRR) and maximum likelihood (MLE). Excel, Python and R give identical results.</p>
+        <div class="fmts"><span>XLSX</span><span>PY</span><span>R</span></div></a></div></div><div class="lib-group" id="lean" data-g="lean"><div class="section-label">// 1 tool</div>
+      <h2>Lean</h2><p class="lead">Flow, takt and waste.</p><div class="lib-grid"><a class="tcard" href="/tools/value-stream-map/" data-q="value stream mapping template record up to 12 process steps with cycle time, changeover, uptime, operators and inventory. calculates takt time, bottleneck, inventory days, production lead time, value-added time and process cycle efficiency (pce), draws the map with a timeline ladder, and plots line balance vs takt. ">
+        <h3>Value Stream Mapping Template</h3><p>Record up to 12 process steps with cycle time, changeover, uptime, operators and inventory. Calculates takt time, bottleneck, inventory days, production lead time, value-added time and process cycle efficiency (PCE), draws the map with a timeline ladder, and plots line balance vs takt.</p>
+        <div class="fmts"><span>XLSX</span></div></a></div></div><p class="empty" id="empty">No tools match that search.</p></div>
+<section style="border:0"><div class="wrap"><p class="hint">Not sure which statistical test you need? <a href="/tools/hypothesis-test-advisor/">The Hypothesis Test Advisor</a> picks it for you.</p></div></section>
+<footer>
+  <div class="wrap">© 2025 Quality Vault. All tools provided for professional use. · <a href="/tools/">All tools</a> · <a href="/">Home</a></div>
+</footer>
+<script>
+(function(){
+  const q = document.getElementById("q"), chips = document.querySelectorAll(".chip");
+  let cat = "all";
+  function apply(){
+    const s = q.value.trim().toLowerCase(); let shown = 0;
+    document.querySelectorAll(".lib-group").forEach(g => {
+      let n = 0;
+      g.querySelectorAll(".tcard").forEach(c => { const ok = !s || c.dataset.q.includes(s); c.hidden = !ok; if (ok) n++; });
+      g.hidden = !n || (cat !== "all" && g.dataset.g !== cat); if (!g.hidden) shown += n;
+    });
+    document.getElementById("empty").style.display = shown ? "none" : "block";
+  }
+  chips.forEach(b => b.onclick = () => { cat = b.dataset.c; chips.forEach(x => x.classList.toggle("on", x === b)); apply(); });
+  q.addEventListener("input", apply);
+  const h = location.hash.slice(1);
+  if (h) { const b = [...chips].find(x => x.dataset.c === h); if (b) b.click(); }
+})();
+</script>
+</body>
+</html>

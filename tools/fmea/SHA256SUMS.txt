@@ -1,0 +1,8 @@
+# SHA-256 checksums — Quality Vault · FMEA Workbook
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+89663e3ff49b241be3c2cdea63ba17c00a2e633f680d33719a8f109a00c2b2f0  FMEA_Workbook.xlsx
+8fc5e0866262b28f779ce6e9a94e1023d3a1902f553816ddb82f9ed3b8fa74cd  README.md
+f191d916bbe40c469943cb51db18d97b491adda3a31dcbf64827fec12b0b456e  fmea-toolkit.zip

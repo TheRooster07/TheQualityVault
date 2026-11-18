@@ -1,0 +1,11 @@
+# SHA-256 checksums — Quality Vault · F-Test for Equal Variances
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+45b6a93d037ed19bfa5e69845ce910e17fe5fccb2a36442a5b76a7be18255900  F_Test_Equal_Variances.xlsx
+c839d63ced5fcf6ad52e82d3dc9750b6db83528dbd6e9e149592f0511ebb37e9  README.md
+98fa512ec0f147e0e0b4209e0d6b4c4a97fe15f5ee2bcf28197a9da066d46bf2  example_data.csv
+9e2d07fb9f53783be68122527d14c0c706b66bd06004cbdea9f8b9dc745cfe2b  f-test-equal-variances-toolkit.zip
+bd779360e87e373ad1ae105c9c90365b6772ca32aea47d0faa4633bcd53c6ffe  f_test.R
+ebb9d8fd5611cb938fed2ea884a268738ec350c3369ecf5eba5dd8efe50e260e  f_test.py

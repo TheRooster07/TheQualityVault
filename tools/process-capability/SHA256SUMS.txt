@@ -1,0 +1,13 @@
+# SHA-256 checksums — Quality Vault · Process Capability Calculator
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+aeacc2ce1f472435b2d01cb1e47361b23bc93769baba1ac641733f7f4f512036  Process_Capability_Calculator.xlsx
+5a84b11b40f73f20cbc2ea3b3f468835304b645b262a58df68e92faab350e72d  README.md
+c2d45fbfb56cc7837e907cc175d5d8b3819f6b85b5d8625dfc2c52f5564617a2  capability_example_R.png
+611d54d909de4ef961faa76a07e04cb4e43e79f797b07e6219f916200aba9f96  capability_example_python.png
+990a0c3b8b31c53711e0f78b341bb04629ad6d7146aee8de77e72af972a47b5b  example_data.csv
+30215e490b150424e52115c99f4aa41e6d38edbe5bb33d93d35c52c557b8581b  process-capability-toolkit.zip
+0950b6b7bc54b4e72003022ec424e46f2cc2597b3494cc537148e0ad3c1e34cd  process_capability.R
+9b2822bac4fc3945332c03b5171202b7466afda05177ad8273aefc7c08c1d113  process_capability.py

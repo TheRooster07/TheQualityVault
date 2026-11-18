@@ -1,0 +1,13 @@
+# SHA-256 checksums — Quality Vault · Weibull Analysis
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+c2cff61a52b668be6e7b4906ad363d8b7ac84c00b4dbfb64886921115838352a  README.md
+b7d47601476fd54c9cd02cff7e9716cf4237b36caeab09c288fe2633b38f0122  Weibull_Analysis.xlsx
+1f7eec8913809b58e5fda73522af6ba210f20670f08ca1a2ca95fe9b172c0002  example_data.csv
+9dc14f78ff83fe216f4a8b6bf3e18fadb3573dc37758c6e658e4b6fcf031ce34  weibull-analysis-toolkit.zip
+d04dac444f6e5242b1bbf3d03a1d20ff7165dd6c56e845b538ec059c3ffb8ece  weibull.R
+63d716256329b200984fd59889bbfb82c59e47235e69a11cd0f41b02238263d0  weibull.py
+3985a1ae28576ea717aad54c2f97bbed4d60354e3a451fb12f83464f13290a83  weibull_example_R.png
+ed4727eb777243c881d90057657b54b0b02012201d0d3c564141f619a73c95d8  weibull_example_python.png
