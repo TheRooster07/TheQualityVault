@@ -1,0 +1,13 @@
+# SHA-256 checksums — Quality Vault · Crow-AMSAA Reliability Growth
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+f7aa280d723ba6dc45aca57c9daecabab4a0e9e3304e417dfb2fdee1eea1ab26  Crow_AMSAA_Reliability_Growth.xlsx
+600e19dbfe2f0ee29fe14196792c726d5d49652f89db1d97beffec5282f35057  README.md
+80e6a394996189d4b35f6d516806e22d8ae8344c2227d387a38141aa277da380  crow-amsaa-toolkit.zip
+70b898f83d0de20a3b41849c938679f7fe9bd23dad7574437f6b6a6a3ac8bb19  crow_amsaa.R
+690f58fe0a2e0ea973a9f30c0d73bfcb3f33815289190b9aef46e30b1d53c7d1  crow_amsaa.py
+998382e909cc3d53d32ced9b47c3af0c1d2ad6d5e5975584dea7c6c73d2c663d  crow_amsaa_example_R.png
+69d0fd8fa9ef982abf93cf1db4719c28acbaccddaa4bb30ae68b69d17bc883d8  crow_amsaa_example_python.png
+46e467ee3c89fd803bf2f44e93bebf9f739c02fa4af42edf38041f88bdeec195  example_data.csv

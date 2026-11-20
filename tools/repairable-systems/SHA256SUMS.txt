@@ -1,0 +1,13 @@
+# SHA-256 checksums — Quality Vault · Repairable Systems & Replacement Age
+# Verify after download:
+#   Windows:  certutil -hashfile <file> SHA256
+#   macOS:    shasum -a 256 <file>
+#   Linux:    sha256sum <file>
+beb91d68d97893d8c32c1dda3286750ec12ca50d886aeabf03bf339d068caa4a  README.md
+3b208926a777d92e58b7d8a0badaa329273218e502f844cc8a1b5dbdc97de018  Repairable_Systems_Replacement_Age.xlsx
+92882892bf3eea19781d4a7d80a4a9a80dcba9557a8fca01f36446fd88cfd04c  example_data.csv
+c14426ad1a8acaa58cf4c649d39d6aed2c85ba0816cdbd8c55118a34e97fd35f  repairable-systems-toolkit.zip
+733c01feff23f63dac2c68bdedc35896d7b7a22c081426a4b745db890b5532eb  repairable_systems.R
+9960770c427687529d1867de52aa16da8ba288e1499aeebdbd81442872681a03  repairable_systems.py
+3256d225fcc8068ea2fc49bdbb23498be5037e35195b7c34d1e7fea3fa60a45c  repairable_systems_example_R.png
+d2e7c17a1e0da92a83a88b683633d2d43df3196bbf17181b822f5d33e070c1ea  repairable_systems_example_python.png
